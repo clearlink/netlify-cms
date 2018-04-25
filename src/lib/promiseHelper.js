@@ -18,3 +18,5 @@ export const resolvePromiseProperties = (obj) => {
     // resolved values
     Object.assign({}, obj, zipObject(promiseKeys, resolvedPromises)));
 };
+
+export const then = func => p => ((p && p.then) ? p.then(func) : func(p));
