@@ -227,6 +227,12 @@ class Backend {
   // returns all the collected entries. Used to retrieve all entries
   // for local searches and queries.
   async listAllEntries(collection) {
+    if (collection.get("folder") && this.implementation.allEntriesByFolder) {
+      const extension = selectFolderEntryExtension(collection);
+      return this.implementation.allEntriesByFolder(collection, extension)
+      .then(entries => this.processEntries(entries, collection));
+    }
+
     const response = await this.listEntries(collection);
     const { entries } = response;
     let { cursor } = response;
