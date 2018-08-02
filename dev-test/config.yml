@@ -6,7 +6,41 @@ media_folder: "assets/uploads"
 
 publish_mode: editorial_workflow
 
+component_types:
+  - label: "Markdown"
+    name: "markdown"
+    fields:
+      - {label: "Value", name: "value", widget: "markdown", buttons: ["bold", "italic"]}
+
+  - label: "Help CTA"
+    name: "helpCTA"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Text", name: "text", widget: "text"}
+
 collections: # A list of collections the CMS should be able to edit
+  - name: "looms"
+    label: "Looms"
+    label_singular: "Loom"
+    folder: "_looms"
+    create: true
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - label: "Content"
+        name: "content"
+        widget: "components"
+        categories:
+          - label: "Category Name"
+            name: "categoryName"
+            components:
+              - label: "Jump Link"
+                name: "jumpLink"
+                fields:
+                  - {label: "Content Text", name: "text", widget: "string"}
+                  - {label: "Link Text", name: "link", widget: "string"}
+
+              - ["markdown", "helpCTA"]
+
   - name: "posts" # Used in routes, ie.: /admin/collections/:slug/edit
     label: "Posts" # Used in the UI
     label_singular: "Post" # Used in the UI, ie: "New Post"

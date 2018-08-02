@@ -30,7 +30,7 @@ const baseConfig = {
     watchContentBase: true,
     quiet: true,
     host: 'localhost',
-    port: 8080,
+    port: 3000,
   },
 };
 
