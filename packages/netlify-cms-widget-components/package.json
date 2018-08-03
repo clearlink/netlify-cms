@@ -2,5 +2,8 @@
   "name": "netlify-cms-widget-components",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-sortable-hoc": "^0.8.3"
+  }
 }
