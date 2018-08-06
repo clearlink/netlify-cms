@@ -13,3 +13,4 @@ website/data/contributors.json
 .cache
 *.log
 slnx.sqlite
+.idea
