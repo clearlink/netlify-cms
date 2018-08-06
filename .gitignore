@@ -12,3 +12,4 @@ website/data/contributors.json
 /coverage/
 .cache
 *.log
+slnx.sqlite
