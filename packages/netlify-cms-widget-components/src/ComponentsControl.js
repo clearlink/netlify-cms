@@ -60,12 +60,11 @@ class ContentBlock extends Component {
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        evt.stopPropagation();
         this.props.handleEnter(this.props.position);
         break;
       case KEY_DELETE_NODE:
-        evt.stopPropagation();
-        if (evt.target.textContent === '') {
+        if (evt.target.value === '') {
+          evt.preventDefault();
           this.props.handleBackspace(this.props.position);
         }
         break;
