@@ -36,8 +36,13 @@ const StyledDragHandle = styled('span')`
   cursor: pointer;
 `;
 
-const StyledContent = styled('input')`
-  flex: 1;
+const StyledContent = styled('textarea')`
+  border: none;
+  font-size: 1em;
+  width: 100%;
+  &:focus {
+    box-shadow: 0 0 3px #ababab;
+  }
 `;
 
 const DragHandle = SortableHandle(() => (
