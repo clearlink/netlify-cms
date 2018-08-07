@@ -36,7 +36,7 @@ const StyledDragHandle = styled('span')`
   cursor: pointer;
 `;
 
-const StyledContent = styled('div')`
+const StyledContent = styled('input')`
   flex: 1;
 `;
 
@@ -46,34 +46,45 @@ const DragHandle = SortableHandle(() => (
   </StyledDragHandle>
 ));
 
+const KEY_CREATE_NODE = 'Enter'
+const KEY_DELETE_NODE = 'Backspace'
+
 class ContentBlock extends Component {
   constructor(props) {
     super(props)
-    this.handleKeyPress = this.handleKeyPress.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleKeyPress(evt) {
-    if (evt.key === 'Enter') {
-      evt.preventDefault()
-      this.props.handleEnter(this.props.position)
+  handleKeyDown(evt) {
+    switch (evt.key) {
+      case KEY_CREATE_NODE:
+        evt.preventDefault()
+        evt.stopPropagation()
+        this.props.handleEnter(this.props.position)
+        break
+      case KEY_DELETE_NODE:
+        evt.stopPropagation()
+        if (evt.target.textContent === '') {
+          this.props.handleBackspace(this.props.position)
+        }
+        break
     }
+    console.log('KEY DOWN', evt.key)
+  }
 
-    if (evt.key === 'Backspace') {
-      if (evt.target.textContent === '') {
-        this.props.handleBackspace(this.props.position)
-      }
-    }
-
-    console.log('KEY', evt.key)
+  handleChange(evt) {
+    console.log('CHANGE', evt.target.value)
+    this.props.setValue(this.props.position, evt.target.value)
   }
 
   render() {
     return (
       <StyledContent
         id={`block-${this.props.position}`}
-        onKeyDown={this.handleKeyPress}
-        dangerouslySetInnerHTML={{__html: this.props.value}}
-        contentEditable
+        onKeyDown={this.handleKeyDown}
+        onChange={this.handleChange}
+        value={this.props.value}
       />
     )
   }
@@ -81,10 +92,12 @@ class ContentBlock extends Component {
 
 ContentBlock.propTypes = {
   handleEnter: PropTypes.func.isRequired,
+  handleBackspace: PropTypes.func.isRequired,
+  setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
 };
 
-const ComponentPart = SortableElement(({ value, handleEnter, handleBackspace, position }) => {
+const ComponentPart = SortableElement(({ value, position, handleEnter, handleBackspace, setValue }) => {
   const style = css`
     display: flex;
     width: 100%;
@@ -101,7 +114,13 @@ const ComponentPart = SortableElement(({ value, handleEnter, handleBackspace, po
   return (
     <div className={style}>
       <DragHandle />
-      <ContentBlock value={value} handleEnter={handleEnter} handleBackspace={handleBackspace} position={position} />
+      <ContentBlock
+        value={value}
+        position={position}
+        handleEnter={handleEnter}
+        handleBackspace={handleBackspace}
+        setValue={setValue}
+      />
     </div>
   )
 });
@@ -109,13 +128,22 @@ const ComponentPart = SortableElement(({ value, handleEnter, handleBackspace, po
 ComponentPart.propTypes = {
   handleEnter: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
+  setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
 };
 
-const ComponentsWrapper = SortableContainer(({ items, handleEnter, handleBackspace }) => (
+const ComponentsWrapper = SortableContainer(({ items, handleEnter, handleBackspace, setValue }) => (
   <div>
-    {items.map((value, idx) => (
-      <ComponentPart key={idx} index={idx} value={value} handleEnter={handleEnter} handleBackspace={handleBackspace} position={idx}/>
+    {items.map((item, idx) => (
+      <ComponentPart
+        key={idx}
+        index={idx}
+        value={item.value}
+        position={idx}
+        handleEnter={handleEnter}
+        handleBackspace={handleBackspace}
+        setValue={setValue}
+      />
     ))}
   </div>
 ));
@@ -123,20 +151,29 @@ const ComponentsWrapper = SortableContainer(({ items, handleEnter, handleBackspa
 ComponentsWrapper.propTypes = {
   handleEnter: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
+  setValue: PropTypes.func.isRequired,
 };
+
+const makeItem = (value) => {
+  return { value }
+}
 
 export default class ComponentsControl extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      content: '',
-      items: ['1', '2', '3', '4',],
+      items: [
+        makeItem('1'),
+        makeItem('2'),
+        makeItem('3'),
+        makeItem('4'),
+      ],
     };
 
     this.handleInput = this.handleInput.bind(this);
     this.removeContentBlock = this.removeContentBlock.bind(this);
     this.addContentBlock = this.addContentBlock.bind(this);
+    this.setValue = this.setValue.bind(this);
   }
 
   handleInput(evt) {
@@ -155,7 +192,7 @@ export default class ComponentsControl extends Component {
   addContentBlock(index) {
     const items = [...this.state.items];
     const newIndex = index + 1
-    items.splice(newIndex, 0, '');
+    items.splice(newIndex, 0, makeItem(''));
     this.setState({ items }, () => {
       // @TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus()
@@ -168,6 +205,13 @@ export default class ComponentsControl extends Component {
     this.setState({ items }, () => {
       document.getElementById(`block-${index - 1}`).focus()
     })
+  }
+
+  setValue(index, value) {
+    console.log('set value', value)
+    const items = [...this.state.items];
+    items.splice(index, 1, makeItem(value));
+    this.setState({ items });
   }
 
   render() {
@@ -188,6 +232,7 @@ export default class ComponentsControl extends Component {
           useDragHandle={true}
           handleEnter={this.addContentBlock}
           handleBackspace={this.removeContentBlock}
+          setValue={this.setValue}
         />
         <textarea value={this.state.content} />
       </div>
