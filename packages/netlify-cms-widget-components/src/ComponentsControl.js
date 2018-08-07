@@ -63,18 +63,23 @@ class ContentBlock extends Component {
   }
 
   handleKeyDown(evt) {
-    switch (evt.key) {
-      case KEY_CREATE_NODE:
-        evt.preventDefault();
-        this.props.handleEnter(this.props.position);
-        break;
-      case KEY_DELETE_NODE:
-        if (evt.target.value === '') {
-          evt.preventDefault();
-          this.props.handleBackspace(this.props.position);
-        }
-        break;
-    }
+    // switch (evt.key) {
+    //   case KEY_CREATE_NODE:
+    //     evt.preventDefault();
+    //     this.props.handleEnter(this.props.position);
+    //     break;
+    //   case KEY_DELETE_NODE:
+    //     if (evt.target.value === '') {
+    //       evt.preventDefault();
+    //       this.props.handleBackspace(this.props.position);
+    //     }
+    //     break;
+    // }
+    evt.preventDefault();
+    const testArr = ["a", "b", "charlie"]
+    const makeArr = testArr.map((chunk) => makeItem(chunk))
+    console.log(makeArr)
+    this.props.handleEnter(this.props.position, makeArr)
     console.log('KEY DOWN', evt.key);
   }
 
@@ -213,7 +218,10 @@ export default class ComponentsControl extends Component {
   addContentBlock(index, value = '') {
     const items = [...this.state.items];
     const newIndex = index + 1;
-    items.splice(newIndex, 0, makeItem(value));
+    console.table(value)
+    console.table([newIndex, 0].concat(value))
+    items.splice.apply(items, [newIndex, 0].concat(value));
+    console.table(items)
     this.setState({ items }, () => {
       // @TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
