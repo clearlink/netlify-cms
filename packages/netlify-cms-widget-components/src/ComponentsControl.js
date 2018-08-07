@@ -59,6 +59,7 @@ class ContentBlock extends Component {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handlePaste = this.handlePaste.bind(this);
   }
 
   handleKeyDown(evt) {
@@ -82,12 +83,28 @@ class ContentBlock extends Component {
     this.props.setValue(this.props.position, evt.target.value);
   }
 
+  handlePaste(evt) {
+    console.log('PASTE')
+    evt.stopPropagation()
+    evt.target.value.split('\n').forEach((chunk, index) => {
+      console.log('chunk', chunk, index)
+      if (index === 0) {
+        this.props.setValue(this.props.position, chunk);
+        return
+      }
+      console.log('new chunk', chunk, index)
+      this.props.handleEnter(this.props.position + index, chunk)
+    })
+    return false
+  }
+
   render() {
     return (
       <StyledContent
         id={`block-${this.props.position}`}
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}
+        onPaste={this.handlePaste}
         value={this.props.value}
         placeholder="add your text here ੧༼ ◕ ∧ ◕ ༽┌∩┐"
       />
@@ -193,10 +210,10 @@ export default class ComponentsControl extends Component {
     });
   };
 
-  addContentBlock(index) {
+  addContentBlock(index, value = '') {
     const items = [...this.state.items];
     const newIndex = index + 1;
-    items.splice(newIndex, 0, makeItem(''));
+    items.splice(newIndex, 0, makeItem(value));
     this.setState({ items }, () => {
       // @TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
@@ -222,11 +239,11 @@ export default class ComponentsControl extends Component {
     const { field } = this.props;
     const cats = field.get('categories');
 
-    for (const cat of cats) {
-      console.log(cat.get('label'));
-      console.log(cat.get('name'));
-      console.log(cat.get('components'));
-    }
+    // for (const cat of cats) {
+    //   console.log(cat.get('label'));
+    //   console.log(cat.get('name'));
+    //   console.log(cat.get('components'));
+    // }
 
     return (
       <div className="components__container">
