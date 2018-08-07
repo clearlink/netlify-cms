@@ -9,6 +9,28 @@ import {
 import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default'
 
+const dummyMarkdown = `
+DIRECTV is practically synonymous with football thanks to its NFL Sunday
+Ticket sports pack, the only exclusive programming deal of its kind across
+all major sports leagues in the US (sorry, MLB, NBA, MLS, and NHL
+fans—football still puts more patrons on the barstools). It's the reason
+more bars and restaurants display the DIRECTV channel guide, and it's not
+uncommon to run across "best" recommendations from Yelp and TripAdvisor as
+to which establishments in major cities have the NFL Sunday Ticket.
+
+> block quote thing..
+
+## A heading
+
+Sports bars aren't the only businesses that can benefit from a DIRECTV package, however; there are plans tailored for waiting rooms, lobbies, gyms, banks, and other public settings, as well as private interoffice options for company break rooms, conference rooms, and personal offices.
+
+* A list
+* Example
+* Or something
+
+DIRECTV commercial packages offer plenty for sports fans, but when it comes to sheer volume of channel choices for people who'd rather watch something else, it can't quite match DISH in similar price ranges—which isn't necessarily a bad thing for public venues, where TVs tend to be on set-it-and-forget-it mode, showing basic staples like sports, news, and kids' shows. Few businesses will hand the remote over to a customer demanding to watch Russia Today on 280 (unless they're a generous tipper).
+`;
+
 const StyledDragHandle = styled('span')`
   margin-right: 10px;
   cursor: pointer;
