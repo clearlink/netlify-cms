@@ -84,7 +84,7 @@ ComponentPart.propTypes = {
 const ComponentsWrapper = SortableContainer(({ items, handleEnter }) => (
   <div>
     {items.map((value, idx) => (
-      <ComponentPart key={idx} value={value} handleEnter={handleEnter} position={idx}/>
+      <ComponentPart key={idx} index={idx} value={value} handleEnter={handleEnter} position={idx}/>
     ))}
   </div>
 ));
