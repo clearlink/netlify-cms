@@ -35,13 +35,21 @@ class ContentBlock extends Component {
       evt.preventDefault()
       this.props.handleEnter(this.props.position)
     }
+
+    if (evt.key === 'Backspace') {
+      if (evt.target.textContent === '') {
+        this.props.handleBackspace(this.props.position)
+      }
+    }
+
+    console.log('KEY', evt.key)
   }
 
   render() {
     return (
       <StyledContent
         id={`block-${this.props.position}`}
-        onKeyPress={this.handleKeyPress}
+        onKeyDown={this.handleKeyPress}
         dangerouslySetInnerHTML={{__html: this.props.value}}
         contentEditable
       />
@@ -54,7 +62,7 @@ ContentBlock.propTypes = {
   position: PropTypes.number.isRequired,
 };
 
-const ComponentPart = SortableElement(({ value, handleEnter, position }) => {
+const ComponentPart = SortableElement(({ value, handleEnter, handleBackspace, position }) => {
   const style = css`
     display: flex;
     width: 100%;
@@ -71,26 +79,28 @@ const ComponentPart = SortableElement(({ value, handleEnter, position }) => {
   return (
     <div className={style}>
       <DragHandle />
-      <ContentBlock value={value} handleEnter={handleEnter} position={position} />
+      <ContentBlock value={value} handleEnter={handleEnter} handleBackspace={handleBackspace} position={position} />
     </div>
   )
 });
 
 ComponentPart.propTypes = {
   handleEnter: PropTypes.func.isRequired,
+  handleBackspace: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
 };
 
-const ComponentsWrapper = SortableContainer(({ items, handleEnter }) => (
+const ComponentsWrapper = SortableContainer(({ items, handleEnter, handleBackspace }) => (
   <div>
     {items.map((value, idx) => (
-      <ComponentPart key={idx} index={idx} value={value} handleEnter={handleEnter} position={idx}/>
+      <ComponentPart key={idx} index={idx} value={value} handleEnter={handleEnter} handleBackspace={handleBackspace} position={idx}/>
     ))}
   </div>
 ));
 
 ComponentsWrapper.propTypes = {
   handleEnter: PropTypes.func.isRequired,
+  handleBackspace: PropTypes.func.isRequired,
 };
 
 export default class ComponentsControl extends Component {
@@ -103,6 +113,7 @@ export default class ComponentsControl extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
+    this.removeContentBlock = this.removeContentBlock.bind(this);
     this.addContentBlock = this.addContentBlock.bind(this);
   }
 
@@ -129,6 +140,14 @@ export default class ComponentsControl extends Component {
     });
   }
 
+  removeContentBlock(index) {
+    const items = [...this.state.items];
+    items.splice(index, 1)
+    this.setState({ items }, () => {
+      document.getElementById(`block-${index - 1}`).focus()
+    })
+  }
+
   render() {
     const { field } = this.props;
     const cats = field.get('categories');
@@ -146,6 +165,7 @@ export default class ComponentsControl extends Component {
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
           handleEnter={this.addContentBlock}
+          handleBackspace={this.removeContentBlock}
         />
         <textarea value={this.state.content} />
       </div>
