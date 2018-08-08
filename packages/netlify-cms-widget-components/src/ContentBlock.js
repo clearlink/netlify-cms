@@ -86,7 +86,6 @@ class ContentBlock extends Component {
   }
 
   render() {
-    console.log('value: ', this.props.value);
     return (
       <StyledContent
         id={`block-${this.props.position}`}
