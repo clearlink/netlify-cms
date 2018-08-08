@@ -9,7 +9,7 @@ const ComponentsWrapper = SortableContainer(
     <div>
       {items.map((item, idx) => (
         <ComponentPart
-          key={idx}
+          key={item.id}
           index={idx}
           value={item.value}
           position={idx}
