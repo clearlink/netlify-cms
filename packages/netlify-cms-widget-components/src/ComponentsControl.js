@@ -9,27 +9,16 @@ import {
 import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default';
 
-const dummyMarkdown = `
-DIRECTV is practically synonymous with football thanks to its NFL Sunday
+const dummyMarkdown = `First: Paragraph synonymous with football thanks to its NFL Sunday
 Ticket sports pack, the only exclusive programming deal of its kind across
-all major sports leagues in the US (sorry, MLB, NBA, MLS, and NHL
-fans—football still puts more patrons on the barstools). It's the reason
-more bars and restaurants display the DIRECTV channel guide, and it's not
-uncommon to run across "best" recommendations from Yelp and TripAdvisor as
-to which establishments in major cities have the NFL Sunday Ticket.
 
-> block quote thing..
+> Second: block quote thing..
 
-## A heading
+## Third: A heading
 
-Sports bars aren't the only businesses that can benefit from a DIRECTV package, however; there are plans tailored for waiting rooms, lobbies, gyms, banks, and other public settings, as well as private interoffice options for company break rooms, conference rooms, and personal offices.
-
-* A list
+* Fourth: A list
 * Example
-* Or something
-
-DIRECTV commercial packages offer plenty for sports fans, but when it comes to sheer volume of channel choices for people who'd rather watch something else, it can't quite match DISH in similar price ranges—which isn't necessarily a bad thing for public venues, where TVs tend to be on set-it-and-forget-it mode, showing basic staples like sports, news, and kids' shows. Few businesses will hand the remote over to a customer demanding to watch Russia Today on 280 (unless they're a generous tipper).
-`;
+* Or something`;
 
 const StyledDragHandle = styled('span')`
   margin-right: 10px;
@@ -53,6 +42,8 @@ const DragHandle = SortableHandle(() => (
 
 const KEY_CREATE_NODE = 'Enter';
 const KEY_DELETE_NODE = 'Backspace';
+const ARR_TEST = 'a';
+const STR_TEST = 's';
 
 class ContentBlock extends Component {
   constructor(props) {
@@ -63,24 +54,31 @@ class ContentBlock extends Component {
   }
 
   handleKeyDown(evt) {
-    // switch (evt.key) {
-    //   case KEY_CREATE_NODE:
-    //     evt.preventDefault();
-    //     this.props.handleEnter(this.props.position);
-    //     break;
-    //   case KEY_DELETE_NODE:
-    //     if (evt.target.value === '') {
-    //       evt.preventDefault();
-    //       this.props.handleBackspace(this.props.position);
-    //     }
-    //     break;
-    // }
-    evt.preventDefault();
-    const testArr = ["a", "b", "charlie"]
-    const makeArr = testArr.map((chunk) => makeItem(chunk))
-    console.log(makeArr)
-    this.props.handleEnter(this.props.position, makeArr)
-    console.log('KEY DOWN', evt.key);
+    switch (evt.key) {
+      case KEY_CREATE_NODE:
+        evt.preventDefault();
+        this.props.handleEnter(this.props.position);
+        break;
+      case KEY_DELETE_NODE:
+        if (evt.target.value === '') {
+          evt.preventDefault();
+          this.props.handleBackspace(this.props.position);
+        }
+        break;
+      case ARR_TEST:
+        evt.preventDefault();
+        const testArr = dummyMarkdown.split('\n\n');
+        const makeArr = testArr.map(chunk => makeItem(chunk));
+        console.log(makeArr);
+        this.props.handleEnter(this.props.position, makeArr);
+        console.log('KEY DOWN', evt.key);
+        break;
+      case STR_TEST:
+        evt.preventDefault();
+        this.props.handleEnter(this.props.position, makeItem('A String'));
+        console.log('KEY DOWN', evt.key);
+        break;
+    }
   }
 
   handleChange(evt) {
@@ -89,21 +87,22 @@ class ContentBlock extends Component {
   }
 
   handlePaste(evt) {
-    console.log('PASTE')
-    evt.stopPropagation()
+    console.log('PASTE');
+    evt.stopPropagation();
     evt.target.value.split('\n').forEach((chunk, index) => {
-      console.log('chunk', chunk, index)
+      console.log('chunk', chunk, index);
       if (index === 0) {
         this.props.setValue(this.props.position, chunk);
-        return
+        return;
       }
-      console.log('new chunk', chunk, index)
-      this.props.handleEnter(this.props.position + index, chunk)
-    })
-    return false
+      console.log('new chunk', chunk, index);
+      this.props.handleEnter(this.props.position + index, chunk);
+    });
+    return false;
   }
 
   render() {
+    console.log('value: ', this.props.value);
     return (
       <StyledContent
         id={`block-${this.props.position}`}
@@ -193,7 +192,12 @@ export default class ComponentsControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [makeItem('1'), makeItem('2'), makeItem('3'), makeItem('4')],
+      items: [
+        makeItem('first'),
+        makeItem('second'),
+        makeItem('3'),
+        makeItem('4'),
+      ],
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -215,13 +219,14 @@ export default class ComponentsControl extends Component {
     });
   };
 
-  addContentBlock(index, value = '') {
+  addContentBlock(index, value = makeItem('')) {
     const items = [...this.state.items];
     const newIndex = index + 1;
-    console.table(value)
-    console.table([newIndex, 0].concat(value))
+    console.log('CONCAT');
+    console.table([newIndex, 0].concat(value));
     items.splice.apply(items, [newIndex, 0].concat(value));
-    console.table(items)
+    console.log('POST SPLICE ITEMS');
+    console.table(items);
     this.setState({ items }, () => {
       // @TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
