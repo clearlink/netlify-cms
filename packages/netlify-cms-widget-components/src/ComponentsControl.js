@@ -60,7 +60,8 @@ export default class ComponentsControl extends Component {
   setValue(index, value) {
     console.log('set value', value);
     const items = [...this.state.items];
-    items.splice(index, 1, makeItem(value));
+    const id = this.state.items[index].id;
+    items.splice(index, 1, makeItem(value, id));
     this.setState({ items });
   }
 
