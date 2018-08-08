@@ -9,29 +9,12 @@ import {
 import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default';
 
-const dummyMarkdown = `First: Paragraph synonymous with football thanks to its NFL Sunday
-Ticket sports pack, the only exclusive programming deal of its kind across
-
-> Second: block quote thing..
-
-## Third: A heading
-
-* Fourth: A list
-* Example
-* Or something`;
+import { makeItem } from './helper';
+import ContentBlock from './ContentBlock';
 
 const StyledDragHandle = styled('span')`
   margin-right: 10px;
   cursor: pointer;
-`;
-
-const StyledContent = styled('textarea')`
-  border: none;
-  font-size: 1em;
-  width: 100%;
-  &:focus {
-    box-shadow: 0 0 3px #ababab;
-  }
 `;
 
 const DragHandle = SortableHandle(() => (
@@ -39,89 +22,6 @@ const DragHandle = SortableHandle(() => (
     <Icon type="drag-handle" />
   </StyledDragHandle>
 ));
-
-const KEY_CREATE_NODE = 'Enter';
-const KEY_DELETE_NODE = 'Backspace';
-const ARR_TEST = 'a';
-const STR_TEST = 's';
-
-class ContentBlock extends Component {
-  constructor(props) {
-    super(props);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePaste = this.handlePaste.bind(this);
-  }
-
-  handleKeyDown(evt) {
-    switch (evt.key) {
-      case KEY_CREATE_NODE:
-        evt.preventDefault();
-        this.props.handleEnter(this.props.position);
-        break;
-      case KEY_DELETE_NODE:
-        if (evt.target.value === '') {
-          evt.preventDefault();
-          this.props.handleBackspace(this.props.position);
-        }
-        break;
-      case ARR_TEST:
-        evt.preventDefault();
-        const testArr = dummyMarkdown.split('\n\n');
-        const makeArr = testArr.map(chunk => makeItem(chunk));
-        console.log(makeArr);
-        this.props.handleEnter(this.props.position, makeArr);
-        console.log('KEY DOWN', evt.key);
-        break;
-      case STR_TEST:
-        evt.preventDefault();
-        this.props.handleEnter(this.props.position, makeItem('A String'));
-        console.log('KEY DOWN', evt.key);
-        break;
-    }
-  }
-
-  handleChange(evt) {
-    console.log('CHANGE', evt.target.value);
-    this.props.setValue(this.props.position, evt.target.value);
-  }
-
-  handlePaste(evt) {
-    console.log('PASTE');
-    evt.stopPropagation();
-    evt.target.value.split('\n').forEach((chunk, index) => {
-      console.log('chunk', chunk, index);
-      if (index === 0) {
-        this.props.setValue(this.props.position, chunk);
-        return;
-      }
-      console.log('new chunk', chunk, index);
-      this.props.handleEnter(this.props.position + index, chunk);
-    });
-    return false;
-  }
-
-  render() {
-    console.log('value: ', this.props.value);
-    return (
-      <StyledContent
-        id={`block-${this.props.position}`}
-        onKeyDown={this.handleKeyDown}
-        onChange={this.handleChange}
-        onPaste={this.handlePaste}
-        value={this.props.value}
-        placeholder="add your text here ੧༼ ◕ ∧ ◕ ༽┌∩┐"
-      />
-    );
-  }
-}
-
-ContentBlock.propTypes = {
-  handleEnter: PropTypes.func.isRequired,
-  handleBackspace: PropTypes.func.isRequired,
-  setValue: PropTypes.func.isRequired,
-  position: PropTypes.number.isRequired,
-};
 
 const ComponentPart = SortableElement(
   ({ value, position, handleEnter, handleBackspace, setValue }) => {
@@ -182,10 +82,6 @@ ComponentsWrapper.propTypes = {
   handleEnter: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
-};
-
-const makeItem = value => {
-  return { value };
 };
 
 export default class ComponentsControl extends Component {
