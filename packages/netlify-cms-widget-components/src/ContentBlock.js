@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { makeItem } from './helper';
+import { colorsRaw } from 'netlify-cms-ui-default';
 
 const dummyMarkdown = `First: Paragraph synonymous with football thanks to its NFL Sunday
 Ticket sports pack, the only exclusive programming deal of its kind across
@@ -17,12 +18,15 @@ Ticket sports pack, the only exclusive programming deal of its kind across
 * Or something`;
 
 const StyledContent = styled(TextareaAutosize)`
-  border: none;
+  width: 100%;
+  height: 22px;
+  padding: .5rem;
+  border: 1px solid transparent;
   font-size: 1em;
   color: inherit;
-  width: 100%;
 
   &:focus {
+    border-color: ${colorsRaw.blue};
     outline: none;
   }
 `;
