@@ -7,12 +7,13 @@ describe('content block', () => {
     const mockedHandleEnter = jest.fn()
     const mockedHandleBackspace = jest.fn()
     const mockedSetValue = jest.fn()
+    const position = 0
     const wrapper = shallow(
       <ContentBlock
         handleEnter={mockedHandleEnter}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
-        position={0}
+        position={position}
       />
     )
     expect(wrapper.length).toEqual(1)
@@ -21,12 +22,13 @@ describe('content block', () => {
     const mockedHandleEnter = jest.fn()
     const mockedHandleBackspace = jest.fn()
     const mockedSetValue = jest.fn()
+    const position = 0
     const component = mount(
       <ContentBlock
         handleEnter={mockedHandleEnter}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
-        position={0}
+        position={position}
       />
     )
     component.find('textarea').simulate('change', {
@@ -34,23 +36,42 @@ describe('content block', () => {
         value: 'custom value',
       },
     })
-    expect(mockedSetValue).toBeCalledWith(0, 'custom value')
+    expect(mockedSetValue).toBeCalledWith(position, 'custom value')
   })
   it('should call handleEnter when the enter key is pressed', () => {
     const mockedHandleEnter = jest.fn()
     const mockedHandleBackspace = jest.fn()
     const mockedSetValue = jest.fn()
+    const position = 2
     const component = mount(
       <ContentBlock
         handleEnter={mockedHandleEnter}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
-        position={0}
+        position={position}
       />
     )
     component.find('textarea').simulate('keyDown', {
       key: 'Enter',
     })
-    expect(mockedHandleEnter).toBeCalledWith(0)
+    expect(mockedHandleEnter).toBeCalledWith(position)
+  })
+  it('should call handleBackspace when the backspace key is pressed', () => {
+    const mockedHandleEnter = jest.fn()
+    const mockedHandleBackspace = jest.fn()
+    const mockedSetValue = jest.fn()
+    const position = 1
+    const component = mount(
+      <ContentBlock
+        handleEnter={mockedHandleEnter}
+        handleBackspace={mockedHandleBackspace}
+        setValue={mockedSetValue}
+        position={position}
+      />
+    )
+    component.find('textarea').simulate('keyDown', {
+      key: 'Backspace',
+    })
+    expect(mockedHandleBackspace).toBeCalledWith(position)
   })
 })
