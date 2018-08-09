@@ -36,4 +36,21 @@ describe('content block', () => {
     })
     expect(mockedSetValue).toBeCalledWith(0, 'custom value')
   })
+  it('should call handleEnter when the enter key is pressed', () => {
+    const mockedHandleEnter = jest.fn()
+    const mockedHandleBackspace = jest.fn()
+    const mockedSetValue = jest.fn()
+    const component = mount(
+      <ContentBlock
+        handleEnter={mockedHandleEnter}
+        handleBackspace={mockedHandleBackspace}
+        setValue={mockedSetValue}
+        position={0}
+      />
+    )
+    component.find('textarea').simulate('keyDown', {
+      key: 'Enter',
+    })
+    expect(mockedHandleEnter).toBeCalledWith(0)
+  })
 })
