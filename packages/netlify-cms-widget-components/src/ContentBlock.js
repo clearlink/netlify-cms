@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import { makeItem } from './helper';
 
@@ -15,12 +16,14 @@ Ticket sports pack, the only exclusive programming deal of its kind across
 * Example
 * Or something`;
 
-const StyledContent = styled('textarea')`
+const StyledContent = styled(TextareaAutosize)`
   border: none;
   font-size: 1em;
+  color: inherit;
   width: 100%;
+
   &:focus {
-    box-shadow: 0 0 3px #ababab;
+    outline: none;
   }
 `;
 

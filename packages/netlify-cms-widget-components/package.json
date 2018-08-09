@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "react-sortable-hoc": "^0.8.3",
+    "react-textarea-autosize": "^7.0.4",
     "uuid": "^3.3.2"
   }
 }
