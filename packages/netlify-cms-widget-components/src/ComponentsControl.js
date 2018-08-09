@@ -9,10 +9,7 @@ export default class ComponentsControl extends Component {
     super(props);
     this.state = {
       items: [
-        makeItem('first'),
-        makeItem('second'),
-        makeItem('3'),
-        makeItem('4'),
+        makeItem(''),
       ],
     };
 
@@ -66,7 +63,7 @@ export default class ComponentsControl extends Component {
   }
 
   render() {
-    const { field } = this.props;
+    const { field, classNameWrapper } = this.props;
     const cats = field.get('categories');
 
     // for (const cat of cats) {
@@ -76,7 +73,7 @@ export default class ComponentsControl extends Component {
     // }
 
     return (
-      <div className="components__container">
+      <div className={classNameWrapper}>
         <ComponentsWrapper
           items={this.state.items}
           onSortEnd={this.handleSortEnd}
@@ -85,7 +82,6 @@ export default class ComponentsControl extends Component {
           handleBackspace={this.removeContentBlock}
           setValue={this.setValue}
         />
-        <textarea value={this.state.content} />
       </div>
     );
   }
