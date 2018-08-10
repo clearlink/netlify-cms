@@ -43,7 +43,7 @@ const ComponentPart = SortableElement(
         />
       </div>
     );
-  }
+  }, {withRef: true}
 );
 
 ComponentPart.propTypes = {
