@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
-import ContentBlock from './ContentBlock.js'
+import ContentBlock from '../src/ContentBlock.js'
 
 describe('content block', () => {
   it('should render without throwing an error', () => {
