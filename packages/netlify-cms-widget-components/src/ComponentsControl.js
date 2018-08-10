@@ -50,7 +50,7 @@ export default class ComponentsControl extends Component {
     const items = [...this.state.items];
     items.splice(index, 1);
     this.setState({ items }, () => {
-      document.getElementById(`block-${index - 1}`).focus();
+      if (this.state.items.length > 1) document.getElementById(`block-${index - 1}`).focus();
     });
   }
 
