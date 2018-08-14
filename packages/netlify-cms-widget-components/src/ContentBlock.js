@@ -65,16 +65,30 @@ class ContentBlock extends PureComponent {
 
   // TODO: Test evt.clipboardData in multiple browsers
   handlePaste(evt) {
-    evt.preventDefault();
     // TODO: Research if we need `window.clipboardData` for browser support
     console.log('PASTE', evt.clipboardData || window.clipboardData);
     console.log('getClipboard', evt.clipboardData.getData('Text'))
 
     const clipboard = evt.clipboardData.getData('Text');
-    const splitClipboard = clipboard.split('\n\n');
-    const makeArr = splitClipboard.map(chunk => makeItem(chunk));
-    console.log(makeArr);
-    this.props.addContent(this.props.position, makeArr);
+    const clipboardArray = clipboard.split('\n\n');
+    let makeArr = [];
+
+    if (clipboardArray.length > 1) {
+      evt.preventDefault();
+
+      if (evt.target.value === '') {
+        const firstElement = clipboardArray.shift();
+        this.pasteInline(evt.currentTarget, firstElement);
+      }
+
+      makeArr = clipboardArray.map(chunk => makeItem(chunk));
+      this.props.addContent(this.props.position, makeArr);
+    }
+  }
+
+  pasteInline(target, content) {
+    console.log(target, content)
+    target.value += content;
   }
 
   render() {
