@@ -75,6 +75,7 @@ class ContentBlock extends PureComponent {
     this.props.setValue(this.props.position, evt.target.value);
   }
 
+  // TODO: Test evt.clipboardData in multiple browsers
   handlePaste(evt) {
     evt.preventDefault();
     // TODO: Research if we need `window.clipboardData` for browser support
@@ -85,6 +86,7 @@ class ContentBlock extends PureComponent {
     const splitClipboard = clipboard.split('\n\n');
     const makeArr = splitClipboard.map(chunk => makeItem(chunk));
     console.log(makeArr);
+    // TODO: Rename `handleEnter` to something more generic
     this.props.handleEnter(this.props.position, makeArr);
   }
 
