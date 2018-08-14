@@ -76,6 +76,8 @@ class ContentBlock extends PureComponent {
   }
 
   handlePaste(evt) {
+    evt.preventDefault();
+    // TODO: Research if we need `window.clipboardData` for browser support
     console.log('PASTE', evt.clipboardData || window.clipboardData);
     console.log('getClipboard', evt.clipboardData.getData('Text'))
 

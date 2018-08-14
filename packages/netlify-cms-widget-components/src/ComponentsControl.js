@@ -35,11 +35,7 @@ export default class ComponentsControl extends Component {
   addContentBlock(index, value = makeItem('')) {
     const items = [...this.state.items];
     const newIndex = index + 1;
-    console.log('CONCAT');
-    console.table([newIndex, 0].concat(value));
     items.splice.apply(items, [newIndex, 0].concat(value));
-    console.log('POST SPLICE ITEMS');
-    console.table(items);
     this.setState({ items }, () => {
       // @TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
