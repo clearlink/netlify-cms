@@ -5,7 +5,7 @@ import { SortableContainer } from 'react-sortable-hoc';
 import ComponentPart from './ComponentPart';
 
 const ComponentsWrapper = SortableContainer(
-  ({ items, handleEnter, handleBackspace, setValue }) => (
+  ({ items, addContent, handleBackspace, setValue }) => (
     <div>
       {items.map((item, idx) => (
         <ComponentPart
@@ -13,7 +13,7 @@ const ComponentsWrapper = SortableContainer(
           index={idx}
           value={item.value}
           position={idx}
-          handleEnter={handleEnter}
+          addContent={addContent}
           handleBackspace={handleBackspace}
           setValue={setValue}
         />
@@ -23,7 +23,7 @@ const ComponentsWrapper = SortableContainer(
 );
 
 ComponentsWrapper.propTypes = {
-  handleEnter: PropTypes.func.isRequired,
+  addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
 };

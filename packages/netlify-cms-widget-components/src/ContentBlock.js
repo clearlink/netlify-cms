@@ -33,12 +33,11 @@ const StyledContent = styled(TextareaAutosize)`
 
 const KEY_CREATE_NODE = 'Enter';
 const KEY_DELETE_NODE = 'Backspace';
-const KEY_ARR_TEST = 'a';
-const KEY_STR_TEST = 's';
 
 class ContentBlock extends PureComponent {
   constructor(props) {
     super(props);
+
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePaste = this.handlePaste.bind(this);
@@ -49,24 +48,13 @@ class ContentBlock extends PureComponent {
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        this.props.handleEnter(this.props.position);
+        this.props.addContent(this.props.position);
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
           evt.preventDefault();
           this.props.handleBackspace(this.props.position);
         }
-        break;
-      case KEY_ARR_TEST:
-        const testArr = dummyMarkdown.split('\n\n');
-        const makeArr = testArr.map(chunk => makeItem(chunk));
-        console.log(makeArr);
-        this.props.handleEnter(this.props.position, makeArr);
-        console.log('KEY DOWN', evt.key);
-        break;
-      case KEY_STR_TEST:
-        this.props.handleEnter(this.props.position, makeItem('A String'));
-        console.log('KEY DOWN', evt.key);
         break;
     }
   }
@@ -86,8 +74,7 @@ class ContentBlock extends PureComponent {
     const splitClipboard = clipboard.split('\n\n');
     const makeArr = splitClipboard.map(chunk => makeItem(chunk));
     console.log(makeArr);
-    // TODO: Rename `handleEnter` to something more generic
-    this.props.handleEnter(this.props.position, makeArr);
+    this.props.addContent(this.props.position, makeArr);
   }
 
   render() {
@@ -106,7 +93,7 @@ class ContentBlock extends PureComponent {
 }
 
 ContentBlock.propTypes = {
-  handleEnter: PropTypes.func.isRequired,
+  addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,

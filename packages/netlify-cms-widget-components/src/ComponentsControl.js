@@ -14,8 +14,8 @@ export default class ComponentsControl extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.removeContentBlock = this.removeContentBlock.bind(this);
-    this.addContentBlock = this.addContentBlock.bind(this);
+    this.removeContent = this.removeContent.bind(this);
+    this.addContent = this.addContent.bind(this);
     this.setValue = this.setValue.bind(this);
   }
 
@@ -32,17 +32,17 @@ export default class ComponentsControl extends Component {
     });
   };
 
-  addContentBlock(index, value = makeItem('')) {
+  addContent(index, value = makeItem('')) {
     const items = [...this.state.items];
     const newIndex = index + 1;
     items.splice.apply(items, [newIndex, 0].concat(value));
     this.setState({ items }, () => {
-      // @TODO: there's got to be a React Sortable way of selecting newly added elements...
+      // TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
     });
   }
 
-  removeContentBlock(index) {
+  removeContent(index) {
     const items = [...this.state.items];
     items.splice(index, 1);
     this.setState({ items }, () => {
@@ -73,8 +73,8 @@ export default class ComponentsControl extends Component {
           items={this.state.items}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
-          handleEnter={this.addContentBlock}
-          handleBackspace={this.removeContentBlock}
+          addContent={this.addContent}
+          handleBackspace={this.removeContent}
           setValue={this.setValue}
         />
       </div>

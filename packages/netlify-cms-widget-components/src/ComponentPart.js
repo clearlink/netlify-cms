@@ -24,7 +24,7 @@ const DragHandle = SortableHandle(() => (
 
 // TODO: Kill :hover, let's use state to .. well.. set states.
 const ComponentPart = SortableElement(
-  ({ value, position, handleEnter, handleBackspace, setValue }) => {
+  ({ value, position, addContent, handleBackspace, setValue }) => {
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -45,7 +45,7 @@ const ComponentPart = SortableElement(
         <ContentBlock
           value={value}
           position={position}
-          handleEnter={handleEnter}
+          addContent={addContent}
           handleBackspace={handleBackspace}
           setValue={setValue}
         />
@@ -55,7 +55,7 @@ const ComponentPart = SortableElement(
 );
 
 ComponentPart.propTypes = {
-  handleEnter: PropTypes.func.isRequired,
+  addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
