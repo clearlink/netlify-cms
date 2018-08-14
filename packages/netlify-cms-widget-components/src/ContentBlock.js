@@ -45,6 +45,7 @@ class ContentBlock extends PureComponent {
   }
 
   handleKeyDown(evt) {
+    console.log('KEY ', evt.key)
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
@@ -71,26 +72,22 @@ class ContentBlock extends PureComponent {
   }
 
   handleChange(evt) {
-    console.log('CHANGE', evt.target.value);
     this.props.setValue(this.props.position, evt.target.value);
   }
 
   handlePaste(evt) {
-    console.log('PASTE');
-    evt.stopPropagation();
-    evt.target.value.split('\n').forEach((chunk, index) => {
-      console.log('chunk', chunk, index);
-      if (index === 0) {
-        this.props.setValue(this.props.position, chunk);
-        return;
-      }
-      console.log('new chunk', chunk, index);
-      this.props.handleEnter(this.props.position + index, chunk);
-    });
-    return false;
+    console.log('PASTE', evt.clipboardData || window.clipboardData);
+    console.log('getClipboard', evt.clipboardData.getData('Text'))
+
+    const clipboard = evt.clipboardData.getData('Text');
+    const splitClipboard = clipboard.split('\n\n');
+    const makeArr = splitClipboard.map(chunk => makeItem(chunk));
+    console.log(makeArr);
+    this.props.handleEnter(this.props.position, makeArr);
   }
 
   render() {
+    console.log(this.props.position + 'Content Rendered')
     return (
       <StyledContent
         id={`block-${this.props.position}`}
