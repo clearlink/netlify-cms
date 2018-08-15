@@ -24,7 +24,7 @@ const DragHandle = SortableHandle(() => (
 
 // TODO: Kill :hover, let's use state to .. well.. set states.
 const ComponentPart = SortableElement(
-  ({ value, position, addContent, handleBackspace, setValue }) => {
+  ({ value, position, addContent, handleBackspace, setValue, setNodeType, nodeIsMarkdown, isMarkdown, nodeType }) => {
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -48,6 +48,9 @@ const ComponentPart = SortableElement(
           addContent={addContent}
           handleBackspace={handleBackspace}
           setValue={setValue}
+          setNodeType={setNodeType}
+          isMarkdown={isMarkdown}
+          nodeType={nodeType}
         />
       </div>
     );
@@ -59,6 +62,9 @@ ComponentPart.propTypes = {
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
+  setNodeType: PropTypes.func.isRequired,
+  isMarkdown: PropTypes.bool.isRequired,
+  nodeType: PropTypes.object.isRequired,
 };
 
 export default ComponentPart;

@@ -4,10 +4,24 @@ import { arrayMove } from 'react-sortable-hoc';
 import ComponentsWrapper from './ComponentsWrapper';
 import { makeItem } from './helper';
 
+const NODE_TYPE_DEFAULT = {}
+const NODE_TYPES = {
+  listOrdered: {
+    symbol: '* ',
+    pattern: /^\* ./,
+  },
+  listUnordered: {
+    symbol: '* ',
+    pattern: /^d\. ./,
+  },
+}
+
 export default class ComponentsControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nodeIsMarkdown: false,
+      nodeType: NODE_TYPE_DEFAULT,
       items: [
         makeItem(''),
       ],
@@ -17,6 +31,8 @@ export default class ComponentsControl extends Component {
     this.removeContent = this.removeContent.bind(this);
     this.addContent = this.addContent.bind(this);
     this.setValue = this.setValue.bind(this);
+    this.matchNode = this.matchNode.bind(this);
+    this.setNodeType = this.setNodeType.bind(this);
   }
 
   handleInput(evt) {
@@ -57,6 +73,32 @@ export default class ComponentsControl extends Component {
     this.setState({ items });
   }
 
+  matchNode(value, pattern) {
+    return value.match(pattern) !== null;
+  }
+
+  setNodeType(value) {
+    if (this.matchNode(value, NODE_TYPES.listUnordered.pattern)) {
+      console.log('unordered list node');
+      this.setState({
+        nodeIsMarkdown: true,
+        nodeType: NODE_TYPES.listUnordered,
+      });
+    } else if (this.matchNode(value, NODE_TYPES.listOrdered.pattern)) {
+      console.log('ordered list node');
+      this.setState({
+        nodeIsMarkdown: true,
+        nodeType: NODE_TYPES.listOrdered,
+      });
+    } else {
+      console.log('not a markdown node');
+      this.setState({
+        nodeIsMarkdown: true,
+        nodeType: NODE_TYPE_DEFAULT,
+      });
+    }
+  }
+
   render() {
     const { field, classNameWrapper } = this.props;
     const cats = field.get('categories');
@@ -76,6 +118,9 @@ export default class ComponentsControl extends Component {
           addContent={this.addContent}
           handleBackspace={this.removeContent}
           setValue={this.setValue}
+          setNodeType={this.setNodeType}
+          isMarkdown={this.state.nodeIsMarkdown}
+          nodeType={this.state.nodeType}
         />
       </div>
     );

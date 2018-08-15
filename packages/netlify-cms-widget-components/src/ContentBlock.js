@@ -48,7 +48,19 @@ class ContentBlock extends PureComponent {
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        this.props.addContent(this.props.position);
+        let value = '';
+        console.log('is markdown', this.props.isMarkdown);
+        if (this.props.isMarkdown) {
+          value = this.props.nodeType.symbol;
+          console.log('node type', this.props.nodeType);
+          console.log('value', value);
+          if (evt.target.value === value) {
+            console.log('clear value');
+            evt.target.value = '';
+            return
+          }
+        }
+        this.props.addContent(this.props.position, makeItem(value));
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
@@ -60,6 +72,7 @@ class ContentBlock extends PureComponent {
   }
 
   handleChange(evt) {
+    this.props.setNodeType(evt.target.value);
     this.props.setValue(this.props.position, evt.target.value);
   }
 
@@ -67,7 +80,7 @@ class ContentBlock extends PureComponent {
   handlePaste(evt) {
     // TODO: Research if we need `window.clipboardData` for browser support
     console.log('PASTE', evt.clipboardData || window.clipboardData);
-    console.log('getClipboard', evt.clipboardData.getData('Text'))
+    console.log('getClipboard', evt.clipboardData.getData('Text'));
 
     const clipboard = evt.clipboardData.getData('Text');
     const clipboardArray = clipboard.split('\n\n');
@@ -107,10 +120,13 @@ class ContentBlock extends PureComponent {
 }
 
 ContentBlock.propTypes = {
+  isMarkdown: PropTypes.bool.isRequired,
   addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
+  setNodeType: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
+  nodeType: PropTypes.object.isRequired,
 };
 
 export default ContentBlock;
