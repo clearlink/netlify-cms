@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { arrayMove } from 'react-sortable-hoc';
 
+import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
 import uuid from 'uuid/v1';
 
@@ -20,7 +21,7 @@ export default class ComponentsControl extends Component {
   constructor(props) {
     super(props);
 
-    this.debug = true;
+    this.logger = getLogger('ComponentsControl', 'orange');
     this.log = this.log.bind(this);
 
     this.state = {
@@ -41,9 +42,7 @@ export default class ComponentsControl extends Component {
   }
 
   log(caller, ...messages) {
-    if (this.debug) {
-      console.log('%c [ComponentsControl DEBUG]', 'color: orange', caller, ...messages);
-    }
+    this.logger.log(caller, ...messages);
   }
 
   makeItem(value, id = '') {
@@ -114,19 +113,19 @@ export default class ComponentsControl extends Component {
 
   setNodeType(value) {
     if (this.matchNode(value, NODE_TYPES.listUnordered.pattern)) {
-      console.log('unordered list node');
+      this.log('setNodeType', 'unordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listUnordered,
       });
     } else if (this.matchNode(value, NODE_TYPES.listOrdered.pattern)) {
-      console.log('ordered list node');
+      this.log('setNodeType', 'ordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listOrdered,
       });
     } else {
-      console.log('not a markdown node');
+      this.log('setNodeType', 'not a markdown node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPE_DEFAULT,
