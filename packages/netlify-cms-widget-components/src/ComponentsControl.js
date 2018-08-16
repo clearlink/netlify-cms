@@ -41,8 +41,8 @@ export default class ComponentsControl extends Component {
     this.makeItem = this.makeItem.bind(this);
   }
 
-  log(caller, ...messages) {
-    this.logger.log(caller, ...messages);
+  log(...messages) {
+    this.logger.log(...messages);
   }
 
   makeItem(value, id = '') {
@@ -63,26 +63,24 @@ export default class ComponentsControl extends Component {
     });
   };
 
+
   addContent(index, value = '') {
-    this.log('addContent', 'index, value', index, value);
+    this.log('index, value', index, value);
     let replace = 0;
     let newValue = null;
     if (value instanceof Array) {
       newValue = value.map(chunk => this.makeItem(chunk));
 
-      // If value is an array and current node value is empty, set the current node to the first value.
+      // If we got multiple values and the current node value is empty, use the first value for the current node.
+      // If the current node value is NOT empty, the first value will be used to create a new node.
       replace = this.state.items[index].value === '' ? 1 : 0;
     } else {
       newValue = this.makeItem(value);
     }
     const items = [...this.state.items];
-
-    this.log('addContent', 'newValue', newValue);
-
     const newIndex = index + 1;
     items.splice.apply(items, [index, replace].concat(newValue));
     this.setState({ items }, () => {
-      this.log('addContent', 'state', this.state);
       // TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
     });
@@ -97,14 +95,12 @@ export default class ComponentsControl extends Component {
   }
 
   setValue(index, value) {
-    this.log('setValue', 'index, value', index, value);
+    this.log('index, value', index, value);
     const items = [...this.state.items];
     const id = this.state.items[index].id;
     items.splice(index, 1, this.makeItem(value, id));
-    this.log('setValue', 'items', items);
-    this.setState({ items }, () => {
-      this.log('setValue', 'state', this.state);
-    });
+    this.log('items', items);
+    this.setState({ items });
   }
 
   matchNode(value, pattern) {
@@ -113,19 +109,19 @@ export default class ComponentsControl extends Component {
 
   setNodeType(value) {
     if (this.matchNode(value, NODE_TYPES.listUnordered.pattern)) {
-      this.log('setNodeType', 'unordered list node');
+      this.log('unordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listUnordered,
       });
     } else if (this.matchNode(value, NODE_TYPES.listOrdered.pattern)) {
-      this.log('setNodeType', 'ordered list node');
+      this.log('ordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listOrdered,
       });
     } else {
-      this.log('setNodeType', 'not a markdown node');
+      this.log('not a markdown node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPE_DEFAULT,

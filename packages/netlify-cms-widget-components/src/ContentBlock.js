@@ -46,23 +46,23 @@ class ContentBlock extends PureComponent {
     this.handlePaste = this.handlePaste.bind(this);
   }
 
-  log(caller, ...messages) {
-    this.logger.log(caller, ...messages);
+  log(...messages) {
+    this.logger.log(...messages);
   }
 
   handleKeyDown(evt) {
-    this.log('handleKeyDown', 'KEY ', evt.key);
+    this.log('KEY ', evt.key);
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
         let value = '';
-        this.log('handleKeyDown', 'is markdown ', this.props.isMarkdown);
+        this.log('is markdown ', this.props.isMarkdown);
         if (this.props.isMarkdown) {
           value = this.props.nodeType.symbol;
-          this.log('handleKeyDown', 'node type', this.props.nodeType);
-          this.log('handleKeyDown', 'value', value);
+          this.log('node type', this.props.nodeType);
+          this.log('value', value);
           if (evt.target.value === value) {
-            this.log('handleKeyDown', 'clear value');
+            this.log('clear value');
             evt.target.value = '';
             return
           }
@@ -79,7 +79,7 @@ class ContentBlock extends PureComponent {
   }
 
   handleChange(evt) {
-    this.log('handleChange', 'evt', evt);
+    this.log('evt', evt);
     this.props.setNodeType(evt.target.value);
     this.props.setValue(this.props.position, evt.target.value);
   }
@@ -87,8 +87,8 @@ class ContentBlock extends PureComponent {
   // TODO: Test evt.clipboardData in multiple browsers
   handlePaste(evt) {
     // TODO: Research if we need `window.clipboardData` for browser support
-    this.log('handlePaste', 'PASTE', evt.clipboardData || window.clipboardData);
-    this.log('handlePaste', 'getClipboard', evt.clipboardData.getData('Text'));
+    this.log('PASTE', evt.clipboardData || window.clipboardData);
+    this.log('getClipboard', evt.clipboardData.getData('Text'));
 
     const clipboard = evt.clipboardData.getData('Text');
     const clipboardArray = clipboard.split('\n\n');
@@ -100,7 +100,7 @@ class ContentBlock extends PureComponent {
   }
 
   render() {
-    this.log('render', this.props.position + 'Content Rendered');
+    this.log(this.props.position + 'Content Rendered');
     return (
       <StyledContent
         id={`block-${this.props.position}`}

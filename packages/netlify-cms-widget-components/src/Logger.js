@@ -5,9 +5,9 @@ class Logger {
     this.color = color;
   }
 
-  log(prefix, ...messages) {
+  log(...messages) {
     if (this.enabled) {
-      console.log(`%c [DEBUG] ${this.name} | ${prefix}`, `color: ${this.color}`, ...messages);
+      console.log(`%c [DEBUG] ${this.name}`, `color: ${this.color}`, ...messages);
     }
   }
 }
