@@ -22,14 +22,19 @@ describe('components wrapper', () => {
     const mockedHandleBackspace = jest.fn()
     const mockedSetValue = jest.fn()
     const mockedHandleSortEnd = jest.fn()
+    const mockedSetNodeType = jest.fn()
+    const mockedNodeType = {}
     const wrapper = shallow(
       <ComponentsWrapper
         items={items}
         onSortEnd={mockedHandleSortEnd}
         useDragHandle={true}
-        handleEnter={mockedHandleEnter}
+        addContent={mockedHandleEnter}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
+        setNodeType={mockedSetNodeType}
+        isMarkdown={false}
+        nodeType={mockedNodeType}
       />,
       {
         disableLifecycleMethods: true,

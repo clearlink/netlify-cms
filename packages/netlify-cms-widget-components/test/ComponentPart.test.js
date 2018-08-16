@@ -14,6 +14,8 @@ describe('component part', () => {
     const mockedHandleEnter = jest.fn()
     const mockedHandleBackspace = jest.fn()
     const mockedSetValue = jest.fn()
+    const mockedSetNodeType = jest.fn()
+    const mockedNodeType = {}
     const position = 0
     const wrapper = shallow(
       <ComponentPart
@@ -21,9 +23,12 @@ describe('component part', () => {
         index={position}
         value={item.value}
         position={position}
-        handleEnter={mockedHandleEnter}
+        addContent={mockedHandleEnter}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
+        setNodeType={mockedSetNodeType}
+        isMarkdown={false}
+        nodeType={mockedNodeType}
       />,
       {
         disableLifecycleMethods: true,

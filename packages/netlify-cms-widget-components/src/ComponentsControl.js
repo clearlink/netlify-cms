@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { arrayMove } from 'react-sortable-hoc';
 
 import ComponentsWrapper from './ComponentsWrapper';
-import { makeItem } from './helper';
+import uuid from 'uuid/v1';
 
 const NODE_TYPE_DEFAULT = {}
 const NODE_TYPES = {
@@ -23,7 +23,7 @@ export default class ComponentsControl extends Component {
       nodeIsMarkdown: false,
       nodeType: NODE_TYPE_DEFAULT,
       items: [
-        makeItem(''),
+        this.makeItem(''),
       ],
     };
 
@@ -33,6 +33,12 @@ export default class ComponentsControl extends Component {
     this.setValue = this.setValue.bind(this);
     this.matchNode = this.matchNode.bind(this);
     this.setNodeType = this.setNodeType.bind(this);
+    this.makeItem = this.makeItem.bind(this);
+  }
+
+  makeItem(value, id = '') {
+    const i = id === '' ? uuid() : id;
+    return { id: i, value };
   }
 
   handleInput(evt) {
@@ -48,10 +54,16 @@ export default class ComponentsControl extends Component {
     });
   };
 
-  addContent(index, value = makeItem('')) {
+  addContent(index, value = '') {
+    let newValue = null;
+    if (value instanceof Array) {
+      newValue = value.map(chunk => this.makeItem(chunk));
+    } else {
+      newValue = this.makeItem(value);
+    }
     const items = [...this.state.items];
     const newIndex = index + 1;
-    items.splice.apply(items, [newIndex, 0].concat(value));
+    items.splice.apply(items, [newIndex, 0].concat(newValue));
     this.setState({ items }, () => {
       // TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
@@ -69,7 +81,7 @@ export default class ComponentsControl extends Component {
   setValue(index, value) {
     const items = [...this.state.items];
     const id = this.state.items[index].id;
-    items.splice(index, 1, makeItem(value, id));
+    items.splice(index, 1, this.makeItem(value, id));
     this.setState({ items });
   }
 

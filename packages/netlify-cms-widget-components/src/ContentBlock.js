@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { makeItem } from './helper';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
 const dummyMarkdown = `First: Paragraph synonymous with football thanks to its NFL Sunday
@@ -60,7 +59,7 @@ class ContentBlock extends PureComponent {
             return
           }
         }
-        this.props.addContent(this.props.position, makeItem(value));
+        this.props.addContent(this.props.position, value);
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
@@ -84,7 +83,6 @@ class ContentBlock extends PureComponent {
 
     const clipboard = evt.clipboardData.getData('Text');
     const clipboardArray = clipboard.split('\n\n');
-    let makeArr = [];
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
@@ -94,8 +92,7 @@ class ContentBlock extends PureComponent {
         this.pasteInline(evt.currentTarget, firstElement);
       }
 
-      makeArr = clipboardArray.map(chunk => makeItem(chunk));
-      this.props.addContent(this.props.position, makeArr);
+      this.props.addContent(this.props.position, clipboardArray);
     }
   }
 
