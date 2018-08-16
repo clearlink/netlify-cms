@@ -10,13 +10,13 @@ describe('component part', () => {
     const item = {
       id: 'third',
       value: 'three',
-    }
-    const mockedHandleEnter = jest.fn()
-    const mockedHandleBackspace = jest.fn()
-    const mockedSetValue = jest.fn()
-    const mockedSetNodeType = jest.fn()
-    const mockedNodeType = {}
-    const position = 0
+    };
+    const mockedHandleEnter = jest.fn();
+    const mockedHandleBackspace = jest.fn();
+    const mockedSetValue = jest.fn();
+    const mockedSetNodeType = jest.fn();
+    const mockedNodeType = {};
+    const position = 0;
     const wrapper = shallow(
       <ComponentPart
         key={item.id}
@@ -33,9 +33,9 @@ describe('component part', () => {
       {
         disableLifecycleMethods: true,
       }
-    )
-    expect(wrapper.length).toEqual(1)
-  })
+    );
+    expect(wrapper.length).toEqual(1);
+  });
   // it('should pass methods to the child content block', () => {
   //   //
   //   const item = {
@@ -62,4 +62,4 @@ describe('component part', () => {
   //   })
   //   expect(mockedHandleBackspace).toBeCalledWith(position)
   // })
-})
+});

@@ -1,6 +1,6 @@
-import React from 'react'
-import {mount, shallow} from 'enzyme'
-import ComponentsWrapper from '../src/ComponentsWrapper.js'
+import React from 'react';
+import {mount, shallow} from 'enzyme';
+import ComponentsWrapper from '../src/ComponentsWrapper.js';
 
 describe('components wrapper', () => {
   it('should render without throwing an error', () => {
@@ -17,13 +17,13 @@ describe('components wrapper', () => {
         id: 'three',
         value: 'third',
       },
-    ]
-    const mockedHandleEnter = jest.fn()
-    const mockedHandleBackspace = jest.fn()
-    const mockedSetValue = jest.fn()
-    const mockedHandleSortEnd = jest.fn()
-    const mockedSetNodeType = jest.fn()
-    const mockedNodeType = {}
+    ];
+    const mockedHandleEnter = jest.fn();
+    const mockedHandleBackspace = jest.fn();
+    const mockedSetValue = jest.fn();
+    const mockedHandleSortEnd = jest.fn();
+    const mockedSetNodeType = jest.fn();
+    const mockedNodeType = {};
     const wrapper = shallow(
       <ComponentsWrapper
         items={items}
@@ -39,7 +39,7 @@ describe('components wrapper', () => {
       {
         disableLifecycleMethods: true,
       }
-    )
-    expect(wrapper.length).toEqual(1)
-  })
-})
+    );
+    expect(wrapper.length).toEqual(1);
+  });
+});
