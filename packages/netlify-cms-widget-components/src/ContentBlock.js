@@ -71,6 +71,7 @@ class ContentBlock extends PureComponent {
   }
 
   handleChange(evt) {
+    console.log('handleChange', evt);
     this.props.setNodeType(evt.target.value);
     this.props.setValue(this.props.position, evt.target.value);
   }
@@ -86,19 +87,8 @@ class ContentBlock extends PureComponent {
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
-
-      if (evt.target.value === '') {
-        const firstElement = clipboardArray.shift();
-        this.pasteInline(evt.currentTarget, firstElement);
-      }
-
       this.props.addContent(this.props.position, clipboardArray);
     }
-  }
-
-  pasteInline(target, content) {
-    console.log(target, content)
-    target.value += content;
   }
 
   render() {

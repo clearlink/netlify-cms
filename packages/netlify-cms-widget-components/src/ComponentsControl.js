@@ -14,11 +14,15 @@ const NODE_TYPES = {
     symbol: '* ',
     pattern: /^d\. ./,
   },
-}
+};
 
 export default class ComponentsControl extends Component {
   constructor(props) {
     super(props);
+
+    this.debug = true;
+    this.log = this.log.bind(this);
+
     this.state = {
       nodeIsMarkdown: false,
       nodeType: NODE_TYPE_DEFAULT,
@@ -34,6 +38,12 @@ export default class ComponentsControl extends Component {
     this.matchNode = this.matchNode.bind(this);
     this.setNodeType = this.setNodeType.bind(this);
     this.makeItem = this.makeItem.bind(this);
+  }
+
+  log(caller, ...messages) {
+    if (this.debug) {
+      console.log('%c [ComponentsControl DEBUG]', 'color: orange', caller, ...messages);
+    }
   }
 
   makeItem(value, id = '') {
@@ -55,16 +65,25 @@ export default class ComponentsControl extends Component {
   };
 
   addContent(index, value = '') {
+    this.log('addContent', 'index, value', index, value);
+    let replace = 0;
     let newValue = null;
     if (value instanceof Array) {
       newValue = value.map(chunk => this.makeItem(chunk));
+
+      // If value is an array and current node value is empty, set the current node to the first value.
+      replace = this.state.items[index].value === '' ? 1 : 0;
     } else {
       newValue = this.makeItem(value);
     }
     const items = [...this.state.items];
+
+    this.log('addContent', 'newValue', newValue);
+
     const newIndex = index + 1;
-    items.splice.apply(items, [newIndex, 0].concat(newValue));
+    items.splice.apply(items, [index, replace].concat(newValue));
     this.setState({ items }, () => {
+      this.log('addContent', 'state', this.state);
       // TODO: there's got to be a React Sortable way of selecting newly added elements...
       document.getElementById(`block-${newIndex}`).focus();
     });
@@ -79,10 +98,14 @@ export default class ComponentsControl extends Component {
   }
 
   setValue(index, value) {
+    this.log('setValue', 'index, value', index, value);
     const items = [...this.state.items];
     const id = this.state.items[index].id;
     items.splice(index, 1, this.makeItem(value, id));
-    this.setState({ items });
+    this.log('setValue', 'items', items);
+    this.setState({ items }, () => {
+      this.log('setValue', 'state', this.state);
+    });
   }
 
   matchNode(value, pattern) {
