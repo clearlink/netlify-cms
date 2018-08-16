@@ -80,9 +80,20 @@ describe('ContentBlock: paste event handling', () => {
   const mockedSetNodeType = jest.fn();
   const mockedNodeType = {};
   let position = 0;
-  let component;
+  let component, mockedPasteEvent;
 
   beforeEach(() => {
+    mockedPasteEvent = {
+      target: {
+        value: '',
+      },
+      clipboardData: {
+        getData: jest.fn(),
+      },
+    };
+    mockedPasteEvent.clipboardData.getData.mockImplementation(() => {
+      return 'line1\n\nline2';
+    });
     position += 1;
     component = mount(
       <ContentBlock
@@ -97,35 +108,14 @@ describe('ContentBlock: paste event handling', () => {
     );
   });
 
-  it('should set the value of the current node and create a new node when two lines of text are pasted into an empty node', () => {
-    const mockedEvent = {
-      target: {
-        value: '',
-      },
-      clipboardData: {
-        getData: jest.fn(),
-      },
-    };
-    mockedEvent.clipboardData.getData.mockImplementation(() => {
-      return 'line1\n\nline2';
-    });
-    component.find('textarea').simulate('paste', mockedEvent);
+  it('should call addContent with two values when two lines of text are pasted into an empty node', () => {
+    component.find('textarea').simulate('paste', mockedPasteEvent);
     expect(mockedAddContent).toBeCalledWith(position, ['line1', 'line2']);
   });
 
-  it('should create two new nodes when pasting two lines of text into a node that already has content', () => {
-    const mockedEvent = {
-      target: {
-        value: 'existing node content',
-      },
-      clipboardData: {
-        getData: jest.fn(),
-      },
-    };
-    mockedEvent.clipboardData.getData.mockImplementation(() => {
-      return 'line1\n\nline2';
-    });
-    component.find('textarea').simulate('paste', mockedEvent);
+  it('should call addContent with two values when pasting two lines of text into a node that already has content', () => {
+    mockedPasteEvent.target.value = 'existing node content';
+    component.find('textarea').simulate('paste', mockedPasteEvent);
     expect(mockedAddContent).toBeCalledWith(position, ['line1', 'line2']);
   });
 });
