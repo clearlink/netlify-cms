@@ -4,7 +4,7 @@ import ContentBlock from '../src/ContentBlock.js';
 
 describe('content block', () => {
   it('should render without throwing an error', () => {
-    const mockedHandleEnter = jest.fn();
+    const mockedAddContent = jest.fn();
     const mockedHandleBackspace = jest.fn();
     const mockedSetValue = jest.fn();
     const mockedSetNodeType = jest.fn();
@@ -13,7 +13,7 @@ describe('content block', () => {
     const wrapper = shallow(
       <ContentBlock
         position={position}
-        addContent={mockedHandleEnter}
+        addContent={mockedAddContent}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
@@ -26,7 +26,7 @@ describe('content block', () => {
 });
 
 describe('mounted content block', () => {
-  const mockedHandleEnter = jest.fn();
+  const mockedAddContent = jest.fn();
   const mockedHandleBackspace = jest.fn();
   const mockedSetValue = jest.fn();
   const mockedSetNodeType = jest.fn();
@@ -39,7 +39,7 @@ describe('mounted content block', () => {
     component = mount(
       <ContentBlock
         position={position}
-        addContent={mockedHandleEnter}
+        addContent={mockedAddContent}
         handleBackspace={mockedHandleBackspace}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
@@ -58,11 +58,11 @@ describe('mounted content block', () => {
     expect(mockedSetValue).toBeCalledWith(position, 'custom value');
   });
 
-  it('should call handleEnter when the enter key is pressed', () => {
+  it('should call addContent when the enter key is pressed', () => {
     component.find('textarea').simulate('keyDown', {
       key: 'Enter',
     });
-    expect(mockedHandleEnter).toBeCalledWith(position, '');
+    expect(mockedAddContent).toBeCalledWith(position, '');
   });
 
   it('should call handleBackspace when the backspace key is pressed', () => {
