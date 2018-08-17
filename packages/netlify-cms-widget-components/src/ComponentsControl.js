@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { arrayMove } from 'react-sortable-hoc';
 
 import { getLogger } from './Logger';
@@ -131,6 +132,8 @@ export default class ComponentsControl extends Component {
 
   render() {
     const { field, classNameWrapper } = this.props;
+    this.log('field', field);
+    this.log('classNameWrapper', classNameWrapper);
     const cats = field.get('categories');
 
     // for (const cat of cats) {
@@ -156,3 +159,8 @@ export default class ComponentsControl extends Component {
     );
   }
 }
+
+ComponentsControl.propTypes = {
+  field: PropTypes.object.isRequired,
+  classNameWrapper: PropTypes.string.isRequired,
+};

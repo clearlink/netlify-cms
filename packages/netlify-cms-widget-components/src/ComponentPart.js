@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SortableElement, SortableHandle } from 'react-sortable-hoc';
-import styled, { css } from 'react-emotion';
-import { Icon } from 'netlify-cms-ui-default';
+import {SortableElement, SortableHandle} from 'react-sortable-hoc';
+import styled, {css} from 'react-emotion';
+import {Icon} from 'netlify-cms-ui-default';
 
 import ContentBlock from './ContentBlock';
-import { colorsRaw } from 'netlify-cms-ui-default';
+import {colorsRaw} from 'netlify-cms-ui-default';
 
 const StyledDragHandle = styled('span')`
   position: absolute;
@@ -18,13 +18,19 @@ const StyledDragHandle = styled('span')`
 
 const DragHandle = SortableHandle(() => (
   <StyledDragHandle>
-    <Icon type="drag-handle" size="small" />
+    <Icon type="drag-handle" size="small"/>
   </StyledDragHandle>
 ));
 
-// TODO: Kill :hover, let's use state to .. well.. set states.
-const ComponentPart = SortableElement(
-  ({ value, position, addContent, handleBackspace, setValue, setNodeType, nodeIsMarkdown, isMarkdown, nodeType }) => {
+// Since we are using refs with this component, it cannot be a stateless functional component, or you'll get this error
+// in the tests:
+//  Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.
+// See this issue:
+//  https://github.com/clauderic/react-sortable-hoc/issues/201
+class ComponentPartBase extends React.Component {
+  render() {
+    // TODO: Kill :hover, let's use state to .. well.. set states.
+    const {value, position, addContent, handleBackspace, setValue, setNodeType, nodeIsMarkdown, isMarkdown, nodeType} = this.props;
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -41,7 +47,7 @@ const ComponentPart = SortableElement(
     `;
     return (
       <div className={style}>
-        <DragHandle />
+        <DragHandle/>
         <ContentBlock
           value={value}
           position={position}
@@ -54,8 +60,10 @@ const ComponentPart = SortableElement(
         />
       </div>
     );
-  }, {withRef: true}
-);
+  }
+}
+
+const ComponentPart = SortableElement(ComponentPartBase, {withRef: true});
 
 ComponentPart.propTypes = {
   addContent: PropTypes.func.isRequired,
