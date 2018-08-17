@@ -6,15 +6,15 @@ import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
 import uuid from 'uuid/v1';
 
-const NODE_TYPE_DEFAULT = {}
-const NODE_TYPES = {
-  listOrdered: {
+export const NODE_TYPE_DEFAULT = {}
+export const NODE_TYPES = {
+  listUnordered: {
     symbol: '* ',
     pattern: /^\* ./,
   },
-  listUnordered: {
+  listOrdered: {
     symbol: '* ',
-    pattern: /^d\. ./,
+    pattern: /^\d\. ./,
   },
 };
 
@@ -32,6 +32,7 @@ export default class ComponentsControl extends Component {
         this.makeItem(''),
       ],
     };
+    this.log(this.state);
 
     this.handleInput = this.handleInput.bind(this);
     this.removeContent = this.removeContent.bind(this);
@@ -132,8 +133,6 @@ export default class ComponentsControl extends Component {
 
   render() {
     const { field, classNameWrapper } = this.props;
-    this.log('field', field);
-    this.log('classNameWrapper', classNameWrapper);
     const cats = field.get('categories');
 
     // for (const cat of cats) {

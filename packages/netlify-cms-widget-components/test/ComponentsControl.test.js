@@ -1,7 +1,7 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import { SortableElement, SortableHandle } from 'react-sortable-hoc';
-import ComponentsControl from '../src/ComponentsControl.js';
+import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
 
 describe('ComponentsControl: props', () => {
   it('should render without throwing an error', () => {
@@ -18,7 +18,7 @@ describe('ComponentsControl: props', () => {
   });
 });
 
-describe('ComponentsControl: basic event handling', () => {
+describe('ComponentsControl: markdown support', () => {
   const mockField = {
     get: jest.fn(),
   };
@@ -33,7 +33,38 @@ describe('ComponentsControl: basic event handling', () => {
     );
   });
 
-  it('should addContent', () => {
-    expect(component.length).toEqual(1);
+  it('should default to a non-markdown node', () => {
+    const state = component.state();
+    expect(state.nodeIsMarkdown).toEqual(false);
+  });
+
+  it('should change to a markdown node if markdown is entered', () => {
+    component.find('textarea').simulate('change', {
+      target: {
+        value: '* text',
+      },
+    });
+    const state = component.state();
+    expect(state.nodeIsMarkdown).toEqual(true);
+  });
+
+  it('should be an Unordered List if `* text` is entered', () => {
+    component.find('textarea').simulate('change', {
+      target: {
+        value: '* text',
+      },
+    });
+    const state = component.state();
+    expect(state.nodeType).toEqual(NODE_TYPES.listUnordered);
+  });
+
+  it('should be an Ordered List if `1. text` is entered', () => {
+    component.find('textarea').simulate('change', {
+      target: {
+        value: '1. text',
+      },
+    });
+    const state = component.state();
+    expect(state.nodeType).toEqual(NODE_TYPES.listOrdered);
   });
 });
