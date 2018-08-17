@@ -1,9 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-// import { SortableElement, SortableHandle } from 'react-sortable-hoc';
 import ComponentPart from '../src/ComponentPart.js';
-// jest.mock('SortableElement');
-// jest.mock('../ComponentPart.js', () => jest.fn())
 
 describe('component part', () => {
   it('should render without throwing an error', () => {
