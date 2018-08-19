@@ -6,6 +6,7 @@ const { plugins } = require('../../scripts/webpack');
 const coreWebpackConfig = require('../netlify-cms-core/webpack.config.js');
 
 const isProduction = process.env.NODE_ENV === 'production';
+const devPort = 3000;
 
 const baseConfig = {
   ...coreWebpackConfig,
@@ -21,7 +22,7 @@ const baseConfig = {
     }),
     new FriendlyErrorsWebpackPlugin({
       compilationSuccessInfo: {
-        messages: ['Netlify CMS is now running at http://localhost:8080'],
+        messages: [`Netlify CMS is now running at http://localhost:${devPort}`],
       },
     }),
   ],
@@ -30,7 +31,7 @@ const baseConfig = {
     watchContentBase: true,
     quiet: true,
     host: 'localhost',
-    port: 3000,
+    port: devPort,
   },
 };
 
