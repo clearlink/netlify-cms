@@ -1,6 +1,5 @@
 import React from 'react';
-import {mount, shallow} from 'enzyme';
-import { SortableElement, SortableHandle } from 'react-sortable-hoc';
+import { mount, shallow } from 'enzyme';
 import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
 
 describe('ComponentsControl: props', () => {
@@ -8,13 +7,27 @@ describe('ComponentsControl: props', () => {
     const mockField = {
       get: jest.fn(),
     };
-    const wrapper = shallow(
-      <ComponentsControl
-        field={mockField}
-        classNameWrapper=""
-      />
-    );
+    const wrapper = shallow(<ComponentsControl field={mockField} classNameWrapper="" />);
     expect(wrapper.length).toEqual(1);
+  });
+});
+
+describe('When a content node is focused and the user presses enter', () => {
+  const mockField = {
+    get: jest.fn(),
+  };
+  const props = {
+    field: mockField,
+    classNameWrapper: '',
+  };
+  const componentsControl = shallow(<ComponentsControl {...props} />);
+
+  beforeEach(() => {
+    componentsControl.instance().addContent(0);
+  });
+
+  it('creates a new content node below their current position', () => {
+    expect(componentsControl.state().items.length).toEqual(2);
   });
 });
 
@@ -25,12 +38,7 @@ describe('ComponentsControl: markdown support', () => {
   let component;
 
   beforeEach(() => {
-    component = mount(
-      <ComponentsControl
-        field={mockField}
-        classNameWrapper=""
-      />
-    );
+    component = mount(<ComponentsControl field={mockField} classNameWrapper="" />);
   });
 
   it('should default to a non-markdown node', () => {
