@@ -15,6 +15,11 @@ describe('ComponentsControl', () => {
     items: [{ id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' }],
   };
 
+  // Runs after every test in this file
+  afterEach(() => {
+    componentsControl.setState(initialState);
+  });
+
   describe('when the component loads', () => {
     it('should render without throwing an error', () => {
       // ? use snapshot to test proper render?
@@ -29,10 +34,6 @@ describe('ComponentsControl', () => {
   describe('when a content node is focused and the user presses enter', () => {
     beforeEach(() => {
       componentsControl.instance().addContent(0);
-    });
-
-    afterEach(() => {
-      componentsControl.setState(initialState);
     });
 
     it('creates a new `item` in state', () => {
@@ -50,10 +51,7 @@ describe('ComponentsControl', () => {
         });
       });
   
-      afterEach(() => {
-        componentsControl.setState(initialState);
-      });
-
+      // ? Can this be raised up a level, since it concerns all markdown types
       it('should change to a markdown node if markdown is entered', () => {
         expect(componentsControl.state().nodeIsMarkdown).toEqual(true);
       });
@@ -72,9 +70,6 @@ describe('ComponentsControl', () => {
         });
       });
   
-      afterEach(() => {
-        componentsControl.setState(initialState);
-      });
 
       it('should be an Ordered List if `1. text` is entered', () => {
         expect(componentsControl.state().nodeType).toEqual(NODE_TYPES.listOrdered);
