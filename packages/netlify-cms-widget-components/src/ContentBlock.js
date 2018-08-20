@@ -6,16 +6,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
-const dummyMarkdown = `First: Paragraph synonymous with football thanks to its NFL Sunday
-Ticket sports pack, the only exclusive programming deal of its kind across
-
-> Second: block quote thing..
-
-## Third: A heading
-
-* Fourth: A list
-* Example
-* Or something`;
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;

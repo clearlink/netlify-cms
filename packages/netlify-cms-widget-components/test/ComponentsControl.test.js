@@ -1,78 +1,80 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
 
-describe('ComponentsControl: props', () => {
-  it('should render without throwing an error', () => {
-    const mockField = {
-      get: jest.fn(),
-    };
-    const wrapper = shallow(<ComponentsControl field={mockField} classNameWrapper="" />);
-    expect(wrapper.length).toEqual(1);
-  });
-});
-
-describe('When a content node is focused and the user presses enter', () => {
-  const mockField = {
-    get: jest.fn(),
-  };
+describe('ComponentsControl', () => {
   const props = {
-    field: mockField,
+    field: { get: jest.fn(), },
     classNameWrapper: '',
   };
-  const componentsControl = shallow(<ComponentsControl {...props} />);
+  const componentsControl = mount(<ComponentsControl {...props} />);
+  const mockFirstItem = { id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' };
 
-  beforeEach(() => {
-    componentsControl.instance().addContent(0);
+  describe('when the component loads', () => {
+    it('should render without throwing an error', () => {
+      // ? use snapshot to test proper render?
+      expect(componentsControl.length).toEqual(1);
+    });
+
+    it('should default to a non-markdown node', () => {
+      expect(componentsControl.state().nodeIsMarkdown).toEqual(false);
+    });
+  })
+
+  describe('When a content node is focused and the user presses enter', () => {
+    beforeEach(() => {
+      componentsControl.instance().addContent(0);
+    });
+
+    afterEach(() => {
+      componentsControl.setState(mockFirstItem);
+    });
+
+    it('Creates a new `item` in state', () => {
+      expect(componentsControl.state().items.length).toEqual(2);
+    });
   });
 
-  it('creates a new `item` in state', () => {
-    expect(componentsControl.state().items.length).toEqual(2);
+  describe('When the user types into a content node', () => {
+    describe('and the user wants to create a bullet list', () => {
+      beforeEach(() => {
+        componentsControl.find('textarea').simulate('change', {
+          target: {
+            value: '* text',
+          },
+        });
+      });
+  
+      afterEach(() => {
+        componentsControl.setState(mockFirstItem);
+      });
+
+      it('Should change to a markdown node if markdown is entered', () => {
+        expect(componentsControl.state().nodeIsMarkdown).toEqual(true);
+      });
+
+      it('should be an Unordered List if `* text` is entered', () => {
+        expect(componentsControl.state().nodeType).toEqual(NODE_TYPES.listUnordered);
+      });
+    });
+
+    describe('and the user wants to create a numbered list', () => {
+      beforeEach(() => {
+        componentsControl.find('textarea').simulate('change', {
+          target: {
+            value: '1. text',
+          },
+        });
+      });
+  
+      afterEach(() => {
+        componentsControl.setState(mockFirstItem);
+      });
+
+      it('should be an Ordered List if `1. text` is entered', () => {
+        expect(componentsControl.state().nodeType).toEqual(NODE_TYPES.listOrdered);
+      });
+    });
   });
 });
 
-describe('ComponentsControl: markdown support', () => {
-  const mockField = {
-    get: jest.fn(),
-  };
-  let component;
-
-  beforeEach(() => {
-    component = mount(<ComponentsControl field={mockField} classNameWrapper="" />);
-  });
-
-  it('should default to a non-markdown node', () => {
-    const state = component.state();
-    expect(state.nodeIsMarkdown).toEqual(false);
-  });
-
-  it('should change to a markdown node if markdown is entered', () => {
-    component.find('textarea').simulate('change', {
-      target: {
-        value: '* text',
-      },
-    });
-    const state = component.state();
-    expect(state.nodeIsMarkdown).toEqual(true);
-  });
-
-  it('should be an Unordered List if `* text` is entered', () => {
-    component.find('textarea').simulate('change', {
-      target: {
-        value: '* text',
-      },
-    });
-    const state = component.state();
-    expect(state.nodeType).toEqual(NODE_TYPES.listUnordered);
-  });
-
-  it('should be an Ordered List if `1. text` is entered', () => {
-    component.find('textarea').simulate('change', {
-      target: {
-        value: '1. text',
-      },
-    });
-    const state = component.state();
-    expect(state.nodeType).toEqual(NODE_TYPES.listOrdered);
-  });
-});

@@ -26,7 +26,7 @@
     "regenerator-runtime": "^0.12.0"
   },
   "scripts": {
-    "test": "DEBUG=0 jest --config=jest.config.js",
+    "test": "DEBUG=0 jest --config=jest.config.js --watchAll",
     "test-coverage": "DEBUG=0 jest --config=jest.config.js --coverage"
   }
 }
