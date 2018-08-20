@@ -8,7 +8,12 @@ describe('ComponentsControl', () => {
     classNameWrapper: '',
   };
   const componentsControl = mount(<ComponentsControl {...props} />);
-  const mockFirstItem = { id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' };
+  const initialState = {
+    nodeIsMarkdown: false,
+    nodeType: {},
+    currentFocusID: null,
+    items: [{ id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' }],
+  };
 
   describe('when the component loads', () => {
     it('should render without throwing an error', () => {
@@ -20,22 +25,22 @@ describe('ComponentsControl', () => {
       expect(componentsControl.state().nodeIsMarkdown).toEqual(false);
     });
   })
-
-  describe('When a content node is focused and the user presses enter', () => {
+  
+  describe('when a content node is focused and the user presses enter', () => {
     beforeEach(() => {
       componentsControl.instance().addContent(0);
     });
 
     afterEach(() => {
-      componentsControl.setState(mockFirstItem);
+      componentsControl.setState(initialState);
     });
 
-    it('Creates a new `item` in state', () => {
+    it('creates a new `item` in state', () => {
       expect(componentsControl.state().items.length).toEqual(2);
     });
   });
 
-  describe('When the user types into a content node', () => {
+  describe('when the user types into a content node', () => {
     describe('and the user wants to create a bullet list', () => {
       beforeEach(() => {
         componentsControl.find('textarea').simulate('change', {
@@ -46,10 +51,10 @@ describe('ComponentsControl', () => {
       });
   
       afterEach(() => {
-        componentsControl.setState(mockFirstItem);
+        componentsControl.setState(initialState);
       });
 
-      it('Should change to a markdown node if markdown is entered', () => {
+      it('should change to a markdown node if markdown is entered', () => {
         expect(componentsControl.state().nodeIsMarkdown).toEqual(true);
       });
 
@@ -68,7 +73,7 @@ describe('ComponentsControl', () => {
       });
   
       afterEach(() => {
-        componentsControl.setState(mockFirstItem);
+        componentsControl.setState(initialState);
       });
 
       it('should be an Ordered List if `1. text` is entered', () => {

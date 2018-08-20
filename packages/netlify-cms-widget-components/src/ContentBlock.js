@@ -37,29 +37,29 @@ class ContentBlock extends PureComponent {
     this.handlePaste = this.handlePaste.bind(this);
   }
 
-  componentDidMount() {
-    const isTrue = this.props.uuid === this.props.currentFocusID;
-    if (isTrue) {
-      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
-    }
-    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
-    if (isTrue) {
-      this.isFocus = true;
-    }
-  }
+  // componentDidMount() {
+  //   const isTrue = this.props.uuid === this.props.currentFocusID;
+  //   if (isTrue) {
+  //     console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
+  //   }
+  //   console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
+  //   if (isTrue) {
+  //     this.isFocus = true;
+  //   }
+  // }
 
-  componentDidUpdate() {
-    const isTrue = this.props.uuid === this.props.currentFocusID;
-    if (isTrue) {
-      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
-    }
-    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
-    if (isTrue) {
-      this.isFocus = true;
-    } else {
-      this.isFocus = false;
-    }
-  }
+  // componentDidUpdate() {
+  //   const isTrue = this.props.uuid === this.props.currentFocusID;
+  //   if (isTrue) {
+  //     console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
+  //   }
+  //   console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
+  //   if (isTrue) {
+  //     this.isFocus = true;
+  //   } else {
+  //     this.isFocus = false;
+  //   }
+  // }
 
   log(...messages) {
     this.logger.log(...messages);
