@@ -6,7 +6,7 @@ import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
 import uuid from 'uuid/v1';
 
-export const NODE_TYPE_DEFAULT = {}
+export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
   listUnordered: {
     symbol: '* ',
@@ -28,9 +28,8 @@ export default class ComponentsControl extends Component {
     this.state = {
       nodeIsMarkdown: false,
       nodeType: NODE_TYPE_DEFAULT,
-      items: [
-        this.makeItem(''),
-      ],
+      items: [this.makeItem('')],
+      currentFocusID: null,
     };
     this.log(this.state);
 
@@ -65,7 +64,6 @@ export default class ComponentsControl extends Component {
     });
   };
 
-
   addContent(index, value = '') {
     this.log('index, value', index, value);
     let replace = 0;
@@ -82,10 +80,7 @@ export default class ComponentsControl extends Component {
     const items = [...this.state.items];
     const newIndex = index + 1;
     items.splice.apply(items, [index, replace].concat(newValue));
-    this.setState({ items }, () => {
-      // TODO: there's got to be a React Sortable way of selecting newly added elements...
-      document.getElementById(`block-${newIndex}`).focus();
-    });
+    this.setState({ items, currentFocusID: newValue.id });
   }
 
   removeContent(index) {
@@ -147,6 +142,7 @@ export default class ComponentsControl extends Component {
           items={this.state.items}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
+          currentFocusID={this.state.currentFocusID}
           addContent={this.addContent}
           handleBackspace={this.removeContent}
           setValue={this.setValue}

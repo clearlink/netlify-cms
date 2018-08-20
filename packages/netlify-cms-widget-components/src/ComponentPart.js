@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SortableElement, SortableHandle} from 'react-sortable-hoc';
-import styled, {css} from 'react-emotion';
-import {Icon} from 'netlify-cms-ui-default';
+import { SortableElement, SortableHandle } from 'react-sortable-hoc';
+import styled, { css } from 'react-emotion';
+import { Icon } from 'netlify-cms-ui-default';
 
 import ContentBlock from './ContentBlock';
-import {colorsRaw} from 'netlify-cms-ui-default';
+import { colorsRaw } from 'netlify-cms-ui-default';
 
 const StyledDragHandle = styled('span')`
   position: absolute;
@@ -18,7 +18,7 @@ const StyledDragHandle = styled('span')`
 
 const DragHandle = SortableHandle(() => (
   <StyledDragHandle>
-    <Icon type="drag-handle" size="small"/>
+    <Icon type="drag-handle" size="small" />
   </StyledDragHandle>
 ));
 
@@ -30,7 +30,19 @@ const DragHandle = SortableHandle(() => (
 class ComponentPartBase extends React.Component {
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
-    const {value, position, addContent, handleBackspace, setValue, setNodeType, nodeIsMarkdown, isMarkdown, nodeType} = this.props;
+    const {
+      uuid,
+      value,
+      position,
+      currentFocusID,
+      addContent,
+      handleBackspace,
+      setValue,
+      setNodeType,
+      nodeIsMarkdown,
+      isMarkdown,
+      nodeType,
+    } = this.props;
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -47,10 +59,12 @@ class ComponentPartBase extends React.Component {
     `;
     return (
       <div className={style}>
-        <DragHandle/>
+        <DragHandle />
         <ContentBlock
+          uuid={uuid}
           value={value}
           position={position}
+          currentFocusID={currentFocusID}
           addContent={addContent}
           handleBackspace={handleBackspace}
           setValue={setValue}
@@ -63,7 +77,7 @@ class ComponentPartBase extends React.Component {
   }
 }
 
-const ComponentPart = SortableElement(ComponentPartBase, {withRef: true});
+const ComponentPart = SortableElement(ComponentPartBase, { withRef: true });
 
 ComponentPart.propTypes = {
   addContent: PropTypes.func.isRequired,

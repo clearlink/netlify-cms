@@ -5,14 +5,26 @@ import { SortableContainer } from 'react-sortable-hoc';
 import ComponentPart from './ComponentPart';
 
 const ComponentsWrapper = SortableContainer(
-  ({ items, addContent, handleBackspace, setValue, setNodeType, isMarkdown, nodeIsMarkdown, nodeType }) => (
+  ({
+    items,
+    currentFocusID,
+    addContent,
+    handleBackspace,
+    setValue,
+    setNodeType,
+    isMarkdown,
+    nodeIsMarkdown,
+    nodeType,
+  }) => (
     <div>
       {items.map((item, idx) => (
         <ComponentPart
           key={item.id}
+          uuid={item.id}
           index={idx}
           value={item.value}
           position={idx}
+          currentFocusID={currentFocusID}
           addContent={addContent}
           handleBackspace={handleBackspace}
           setValue={setValue}
@@ -22,7 +34,7 @@ const ComponentsWrapper = SortableContainer(
         />
       ))}
     </div>
-  )
+  ),
 );
 
 ComponentsWrapper.propTypes = {

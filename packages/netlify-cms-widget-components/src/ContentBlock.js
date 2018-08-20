@@ -20,7 +20,7 @@ Ticket sports pack, the only exclusive programming deal of its kind across
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
   height: 22px;
-  padding: .5rem;
+  padding: 0.5rem;
   border: 1px solid transparent;
   font-size: 1em;
   color: inherit;
@@ -40,10 +40,35 @@ class ContentBlock extends PureComponent {
 
     this.logger = getLogger('ContentBlock', 'yellow');
     this.log = this.log.bind(this);
+    this.isFocus = false;
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePaste = this.handlePaste.bind(this);
+  }
+
+  componentDidMount() {
+    const isTrue = this.props.uuid === this.props.currentFocusID;
+    if (isTrue) {
+      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
+    }
+    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
+    if (isTrue) {
+      this.isFocus = true;
+    }
+  }
+
+  componentDidUpdate() {
+    const isTrue = this.props.uuid === this.props.currentFocusID;
+    if (isTrue) {
+      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
+    }
+    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
+    if (isTrue) {
+      this.isFocus = true;
+    } else {
+      this.isFocus = false;
+    }
   }
 
   log(...messages) {
@@ -64,7 +89,7 @@ class ContentBlock extends PureComponent {
           if (evt.target.value === value) {
             this.log('clear value');
             evt.target.value = '';
-            return
+            return;
           }
         }
         this.props.addContent(this.props.position, value);
@@ -104,6 +129,7 @@ class ContentBlock extends PureComponent {
     return (
       <StyledContent
         id={`block-${this.props.position}`}
+        autoFocus={this.isFocus}
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}
         onPaste={this.handlePaste}

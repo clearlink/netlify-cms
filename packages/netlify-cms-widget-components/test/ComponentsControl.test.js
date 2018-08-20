@@ -26,7 +26,7 @@ describe('When a content node is focused and the user presses enter', () => {
     componentsControl.instance().addContent(0);
   });
 
-  it('creates a new content node below their current position', () => {
+  it('creates a new `item` in state', () => {
     expect(componentsControl.state().items.length).toEqual(2);
   });
 });
