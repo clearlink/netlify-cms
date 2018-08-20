@@ -78,8 +78,7 @@ export default class ComponentsControl extends Component {
       newValue = this.makeItem(value);
     }
     const items = [...this.state.items];
-    const newIndex = index + 1;
-    items.splice.apply(items, [index, replace].concat(newValue));
+    items.splice.apply(items, [index + 1, replace].concat(newValue));
     this.setState({ items, currentFocusID: newValue.id });
   }
 
