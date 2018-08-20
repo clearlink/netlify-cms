@@ -10,7 +10,7 @@ manifest.yml
 .imdone/
 website/data/contributors.json
 cypress/videos
-/coverage/
+coverage/
 .cache
 *.log
 slnx.sqlite
