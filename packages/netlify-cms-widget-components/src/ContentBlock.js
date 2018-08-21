@@ -31,7 +31,6 @@ class ContentBlock extends PureComponent {
     this.textInput = React.createRef();
     this.logger = getLogger('ContentBlock', 'yellow');
     this.log = this.log.bind(this);
-    this.isFocus = false;
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);

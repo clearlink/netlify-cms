@@ -84,10 +84,10 @@ export default class ComponentsControl extends Component {
 
   removeContent(index) {
     const items = [...this.state.items];
+    if (items.length <= 1) return;
+    const temp = index === 0 ? 0 : index - 1;
     items.splice(index, 1);
-    this.setState({ items }, () => {
-      if (this.state.items.length > 1) document.getElementById(`block-${index - 1}`).focus();
-    });
+    this.setState({ items, currentFocusID: items[temp].id});
   }
 
   setValue(index, value) {
