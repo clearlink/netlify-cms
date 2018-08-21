@@ -28,6 +28,7 @@ class ContentBlock extends PureComponent {
   constructor(props) {
     super(props);
 
+    this.textInput = React.createRef();
     this.logger = getLogger('ContentBlock', 'yellow');
     this.log = this.log.bind(this);
     this.isFocus = false;
@@ -38,26 +39,17 @@ class ContentBlock extends PureComponent {
   }
 
   componentDidMount() {
-    const isTrue = this.props.uuid === this.props.currentFocusID;
-    if (isTrue) {
-      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
-    }
-    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
-    if (isTrue) {
-      this.isFocus = true;
-    }
+    this.focusInputIfCurrentFocus()
   }
 
   componentDidUpdate() {
-    const isTrue = this.props.uuid === this.props.currentFocusID;
-    if (isTrue) {
-      console.log('IDS: ', this.props.uuid, this.props.currentFocusID);
-    }
-    console.log('%cAre IDs equal?', 'color: cornflowerblue;', isTrue);
-    if (isTrue) {
-      this.isFocus = true;
-    } else {
-      this.isFocus = false;
+    this.focusInputIfCurrentFocus()
+  }
+  
+  focusInputIfCurrentFocus() {
+    const textInput = this.textInput.current;
+    if (this.props.uuid === this.props.currentFocusID) {
+      if (textInput) textInput._ref.focus()
     }
   }
 
@@ -118,8 +110,8 @@ class ContentBlock extends PureComponent {
     this.log(this.props.position + 'Content Rendered');
     return (
       <StyledContent
+        innerRef={this.textInput}
         id={`block-${this.props.position}`}
-        autoFocus={this.isFocus}
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}
         onPaste={this.handlePaste}
