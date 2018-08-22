@@ -15,6 +15,10 @@ describe('ComponentsControl', () => {
     items: [{ id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' }],
   };
 
+  beforeAll(() => {
+    componentsControl.setState(initialState);
+  });
+
   // Runs after every test in this file
   afterEach(() => {
     componentsControl.setState(initialState);
@@ -33,11 +37,16 @@ describe('ComponentsControl', () => {
   
   describe('when a content node is focused and the user presses enter', () => {
     beforeEach(() => {
-      componentsControl.instance().addContent(0);
+      componentsControl.instance().addContent(0, '');
     });
 
     it('creates a new `item` in state', () => {
       expect(componentsControl.state().items.length).toEqual(2);
+    });
+
+    it('creates the new `item` below the current focused `item`', () => {
+      const firstId = initialState.items[0].id;
+      expect(componentsControl.state().items[0].id).toEqual(firstId);
     });
   });
 
