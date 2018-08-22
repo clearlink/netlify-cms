@@ -4,7 +4,7 @@ import { arrayMove } from 'react-sortable-hoc';
 
 import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
-import uuid from 'uuid/v1';
+import uuid from 'uuid/v4';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {

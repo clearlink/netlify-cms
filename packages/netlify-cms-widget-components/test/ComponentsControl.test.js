@@ -1,10 +1,10 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
+import {mount} from 'enzyme';
+import ComponentsControl, {NODE_TYPES} from '../src/ComponentsControl.js';
 
 describe('ComponentsControl', () => {
   const props = {
-    field: { get: jest.fn(), },
+    field: {get: jest.fn(),},
     classNameWrapper: '',
   };
   const componentsControl = mount(<ComponentsControl {...props} />);
@@ -12,7 +12,7 @@ describe('ComponentsControl', () => {
     nodeIsMarkdown: false,
     nodeType: {},
     currentFocusID: null,
-    items: [{ id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' }],
+    items: [{id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: ''}],
   };
 
   beforeAll(() => {
@@ -33,8 +33,8 @@ describe('ComponentsControl', () => {
     it('should default to a non-markdown node', () => {
       expect(componentsControl.state().nodeIsMarkdown).toEqual(false);
     });
-  })
-  
+  });
+
   describe('when a content node is focused and the user presses enter', () => {
     beforeEach(() => {
       componentsControl.instance().addContent(0, '');
@@ -59,7 +59,7 @@ describe('ComponentsControl', () => {
           },
         });
       });
-  
+
       // ? Can this be raised up a level, since it concerns all markdown types
       it('should change to a markdown node if markdown is entered', () => {
         expect(componentsControl.state().nodeIsMarkdown).toEqual(true);
@@ -78,7 +78,7 @@ describe('ComponentsControl', () => {
           },
         });
       });
-  
+
 
       it('should be an Ordered List if `1. text` is entered', () => {
         expect(componentsControl.state().nodeType).toEqual(NODE_TYPES.listOrdered);
