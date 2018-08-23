@@ -125,7 +125,7 @@ export default class ComponentsControl extends Component {
     const cats = field.get('categories');
 
     console.group('cats');
-    this.log('Cats: ', cats)
+
     for (const cat of cats) {
       this.log('Category Label: ', cat.get('label'));
       this.log('Category Name: ', cat.get('name'));
@@ -133,9 +133,19 @@ export default class ComponentsControl extends Component {
 
       console.group('components');
       for (const component of cat.get('components')) {
+        if (Array.isArray(component.toJS())) {
+          continue;
+        }
         this.log('Component Label: ', component.get('label'));
         this.log('Component name: ', component.get('name'));
-        this.log('Component Fields: ', component.get('fields'));
+
+        console.group('fields');
+        for (const field of component.get('fields')) {
+          this.log('Field Label: ', field.get('label'));
+          this.log('Field name: ', field.get('name'));
+          this.log('Field widget: ', field.get('widget'));
+        }
+        console.groupEnd('fields');
       } 
 
       console.groupEnd('components');
