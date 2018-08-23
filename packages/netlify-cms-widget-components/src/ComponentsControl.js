@@ -31,7 +31,6 @@ export default class ComponentsControl extends Component {
       items: [this.makeItem('')],
       currentFocusID: null,
     };
-    this.log(this.state);
 
     this.handleInput = this.handleInput.bind(this);
     this.removeContent = this.removeContent.bind(this);
@@ -65,7 +64,6 @@ export default class ComponentsControl extends Component {
   };
 
   addContent(index, value = '') {
-    this.log('index, value', index, value);
     let replace = 0;
     let newValue = null;
     if (value instanceof Array) {
@@ -91,11 +89,9 @@ export default class ComponentsControl extends Component {
   }
 
   setValue(index, value) {
-    this.log('index, value', index, value);
     const items = [...this.state.items];
     const id = this.state.items[index].id;
     items.splice(index, 1, this.makeItem(value, id));
-    this.log('items', items);
     this.setState({ items }, () => {
       this.props.onChange(this.state.items);
     });
@@ -107,19 +103,16 @@ export default class ComponentsControl extends Component {
 
   setNodeType(value) {
     if (this.matchNode(value, NODE_TYPES.listUnordered.pattern)) {
-      this.log('unordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listUnordered,
       });
     } else if (this.matchNode(value, NODE_TYPES.listOrdered.pattern)) {
-      this.log('ordered list node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPES.listOrdered,
       });
     } else {
-      this.log('not a markdown node');
       this.setState({
         nodeIsMarkdown: true,
         nodeType: NODE_TYPE_DEFAULT,
@@ -131,11 +124,23 @@ export default class ComponentsControl extends Component {
     const { field, classNameWrapper } = this.props;
     const cats = field.get('categories');
 
-    // for (const cat of cats) {
-    //   console.log(cat.get('label'));
-    //   console.log(cat.get('name'));
-    //   console.log(cat.get('components'));
-    // }
+    console.group('cats');
+    this.log('Cats: ', cats)
+    for (const cat of cats) {
+      this.log('Category Label: ', cat.get('label'));
+      this.log('Category Name: ', cat.get('name'));
+      this.log('Category Components: ', cat.get('components'));
+
+      console.group('components');
+      for (const component of cat.get('components')) {
+        this.log('Component Label: ', component.get('label'));
+        this.log('Component name: ', component.get('name'));
+        this.log('Component Fields: ', component.get('fields'));
+      } 
+
+      console.groupEnd('components');
+    }
+    console.groupEnd('cats')
 
     return (
       <div className={classNameWrapper}>
