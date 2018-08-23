@@ -44,7 +44,7 @@ class ContentBlock extends PureComponent {
   componentDidUpdate() {
     this.focusInputIfCurrentFocus()
   }
-  
+
   focusInputIfCurrentFocus() {
     const textInput = this.textInput.current;
     if (this.props.uuid === this.props.currentFocusID) {
@@ -85,7 +85,7 @@ class ContentBlock extends PureComponent {
   }
 
   handleChange(evt) {
-    this.log('evt', evt);
+    this.log('evt', evt.target.value);
     this.props.setNodeType(evt.target.value);
     this.props.setValue(this.props.position, evt.target.value);
   }

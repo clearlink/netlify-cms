@@ -96,7 +96,9 @@ export default class ComponentsControl extends Component {
     const id = this.state.items[index].id;
     items.splice(index, 1, this.makeItem(value, id));
     this.log('items', items);
-    this.setState({ items });
+    this.setState({ items }, () => {
+      this.props.onChange(this.state.items);
+    });
   }
 
   matchNode(value, pattern) {
