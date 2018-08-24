@@ -5,6 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
+import { NODE_TYPES } from './ComponentsControl';
 
 
 const StyledContent = styled(TextareaAutosize)`
@@ -59,15 +60,22 @@ class ContentBlock extends PureComponent {
   handleKeyDown(evt) {
     switch (evt.key) {
       case KEY_CREATE_NODE:
-        evt.preventDefault();
         let value = '';
         if (this.props.isMarkdown) {
           value = this.props.nodeType.symbol;
+          // If the node is just a markdown symbol without any content, clear it out.
           if (evt.target.value === value) {
+            evt.preventDefault();
             evt.target.value = '';
             return;
           }
+          // If this is a markdown list, the enter key should create a new line, not a new node.
+          if (this.props.nodeType === NODE_TYPES.listUnordered || this.props.nodeType === NODE_TYPES.listOrdered) {
+            evt.target.value += "* ";
+            return;
+          }
         }
+        evt.preventDefault();
         this.props.addContent(this.props.position, value);
         break;
       case KEY_DELETE_NODE:
