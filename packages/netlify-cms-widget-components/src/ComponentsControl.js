@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
-import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
-import uuid from 'uuid/v4';
+import { getLogger } from './Logger';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
@@ -60,6 +60,9 @@ export default class ComponentsControl extends Component {
   handleSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
       items: arrayMove(this.state.items, oldIndex, newIndex),
+    }, () => {
+      // TODO: No sir, I don't like this..
+      this.props.onChange(this.state.items);
     });
   };
 
@@ -124,33 +127,34 @@ export default class ComponentsControl extends Component {
     const { field, classNameWrapper } = this.props;
     const cats = field.get('categories');
 
-    // console.group('cats');
-    //
-    // for (const cat of cats) {
-    //   this.log('Category Label: ', cat.get('label'));
-    //   this.log('Category Name: ', cat.get('name'));
-    //   this.log('Category Components: ', cat.get('components'));
-    //
-    //   console.group('components');
-    //   for (const component of cat.get('components')) {
-    //     if (Array.isArray(component.toJS())) {
-    //       continue;
-    //     }
-    //     this.log('Component Label: ', component.get('label'));
-    //     this.log('Component name: ', component.get('name'));
-    //
-    //     console.group('fields');
-    //     for (const field of component.get('fields')) {
-    //       this.log('Field Label: ', field.get('label'));
-    //       this.log('Field name: ', field.get('name'));
-    //       this.log('Field widget: ', field.get('widget'));
-    //     }
-    //     console.groupEnd('fields');
-    //   }
-    //
-    //   console.groupEnd('components');
-    // }
-    // console.groupEnd('cats');
+    console.group('cats');
+
+    for (const cat of cats) {
+      this.log('Category Label: ', cat.get('label'));
+      this.log('Category Name: ', cat.get('name'));
+      this.log('Category Components: ', cat.get('components'));
+
+      console.group('components');
+      for (const component of cat.get('components')) {
+        if (Array.isArray(component.toJS())) {
+          // TODO: Handle arrays...
+          continue;
+        }
+        this.log('Component Label: ', component.get('label'));
+        this.log('Component name: ', component.get('name'));
+
+        console.group('fields');
+        for (const field of component.get('fields')) {
+          this.log('Field Label: ', field.get('label'));
+          this.log('Field name: ', field.get('name'));
+          this.log('Field widget: ', field.get('widget'));
+        }
+        console.groupEnd('fields');
+      }
+
+      console.groupEnd('components');
+    }
+    console.groupEnd('cats')
 
     return (
       <div className={classNameWrapper}>
@@ -174,4 +178,5 @@ export default class ComponentsControl extends Component {
 ComponentsControl.propTypes = {
   field: PropTypes.object.isRequired,
   classNameWrapper: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
