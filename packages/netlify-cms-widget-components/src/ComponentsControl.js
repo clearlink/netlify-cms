@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
-import { getLogger } from './Logger';
 import ComponentsWrapper from './ComponentsWrapper';
-import uuid from 'uuid/v4';
+import { getLogger } from './Logger';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
@@ -60,6 +60,9 @@ export default class ComponentsControl extends Component {
   handleSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
       items: arrayMove(this.state.items, oldIndex, newIndex),
+    }, () => {
+      // TODO: No sir, I don't like this..
+      this.props.onChange(this.state.items);
     });
   };
 
@@ -134,6 +137,7 @@ export default class ComponentsControl extends Component {
       console.group('components');
       for (const component of cat.get('components')) {
         if (Array.isArray(component.toJS())) {
+          // TODO: Handle arrays...
           continue;
         }
         this.log('Component Label: ', component.get('label'));
@@ -174,4 +178,5 @@ export default class ComponentsControl extends Component {
 ComponentsControl.propTypes = {
   field: PropTypes.object.isRequired,
   classNameWrapper: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
