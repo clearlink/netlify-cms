@@ -6,15 +6,15 @@ import ComponentPart from './ComponentPart';
 
 const ComponentsWrapper = SortableContainer(
   ({
-     items,
-     currentFocusID,
-     addContent,
-     handleBackspace,
-     setValue,
-     setNodeType,
-     isMarkdown,
-     nodeIsMarkdown,
-     nodeType,
+    items,
+    currentFocusID,
+    addContent,
+    handleBackspace,
+    setValue,
+    setNodeType,
+    isMarkdown,
+    nodeIsMarkdown,
+    nodeType,
   }) => (
     <div>
       {items.map((item, idx) => (

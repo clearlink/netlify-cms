@@ -6,7 +6,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
-
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
   height: 22px;
@@ -38,17 +37,17 @@ class ContentBlock extends PureComponent {
   }
 
   componentDidMount() {
-    this.focusInputIfCurrentFocus()
+    this.focusInputIfCurrentFocus();
   }
 
   componentDidUpdate() {
-    this.focusInputIfCurrentFocus()
+    this.focusInputIfCurrentFocus();
   }
 
   focusInputIfCurrentFocus() {
     const textInput = this.textInput.current;
     if (this.props.uuid === this.props.currentFocusID) {
-      if (textInput) textInput._ref.focus()
+      if (textInput) textInput._ref.focus();
     }
   }
 
@@ -113,6 +112,8 @@ class ContentBlock extends PureComponent {
 }
 
 ContentBlock.propTypes = {
+  uuid: PropTypes.string.isRequired,
+  currentFocusID: PropTypes.string.isRequired,
   isMarkdown: PropTypes.bool.isRequired,
   addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
