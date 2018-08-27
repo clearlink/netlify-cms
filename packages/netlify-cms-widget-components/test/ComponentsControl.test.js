@@ -5,13 +5,16 @@ import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
 describe('ComponentsControl', () => {
   const props = {
     field: { get: jest.fn() },
+    onChange: jest.fn(),
+    isMarkdown: false,
+    currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
     classNameWrapper: '',
   };
   const componentsControl = mount(<ComponentsControl {...props} />);
   const initialState = {
     nodeIsMarkdown: false,
     nodeType: {},
-    currentFocusID: null,
+    currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
     items: [{ id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b', value: '' }],
   };
 

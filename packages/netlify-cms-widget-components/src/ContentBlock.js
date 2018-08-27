@@ -121,6 +121,7 @@ ContentBlock.propTypes = {
   setNodeType: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
   nodeType: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default ContentBlock;

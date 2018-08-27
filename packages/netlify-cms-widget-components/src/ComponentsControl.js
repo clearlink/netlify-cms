@@ -24,12 +24,13 @@ export default class ComponentsControl extends Component {
 
     this.logger = getLogger('ComponentsControl', 'orange');
     this.log = this.log.bind(this);
+    const initItem = this.makeItem('');
 
     this.state = {
       nodeIsMarkdown: false,
       nodeType: NODE_TYPE_DEFAULT,
-      items: [this.makeItem('')],
-      currentFocusID: null,
+      items: [initItem],
+      currentFocusID: initItem.id,
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -58,12 +59,15 @@ export default class ComponentsControl extends Component {
 
   // @TODO: drag-n-drop sorting isn't working.
   handleSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState({
-      items: arrayMove(this.state.items, oldIndex, newIndex),
-    }, () => {
-      // TODO: No sir, I don't like this..
-      this.props.onChange(this.state.items);
-    });
+    this.setState(
+      {
+        items: arrayMove(this.state.items, oldIndex, newIndex),
+      },
+      () => {
+        // TODO: No sir, I don't like this..
+        this.props.onChange(this.state.items);
+      },
+    );
   };
 
   addContent(index, value = '') {
@@ -88,7 +92,7 @@ export default class ComponentsControl extends Component {
     if (items.length <= 1) return;
     const temp = index === 0 ? 0 : index - 1;
     items.splice(index, 1);
-    this.setState({ items, currentFocusID: items[temp].id});
+    this.setState({ items, currentFocusID: items[temp].id });
   }
 
   setValue(index, value) {
@@ -127,34 +131,35 @@ export default class ComponentsControl extends Component {
     const { field, classNameWrapper } = this.props;
     const cats = field.get('categories');
 
-    console.group('cats');
+    // console.log(cats.getIn('components'));
+    // console.group('cats');
 
-    for (const cat of cats) {
-      this.log('Category Label: ', cat.get('label'));
-      this.log('Category Name: ', cat.get('name'));
-      this.log('Category Components: ', cat.get('components'));
+    // for (const cat of cats) {
+    //   this.log('Category Label: ', cat.get('label'));
+    //   this.log('Category Name: ', cat.get('name'));
+    //   this.log('Category Components: ', cat.get('components'));
 
-      console.group('components');
-      for (const component of cat.get('components')) {
-        if (Array.isArray(component.toJS())) {
-          // TODO: Handle arrays...
-          continue;
-        }
-        this.log('Component Label: ', component.get('label'));
-        this.log('Component name: ', component.get('name'));
+    //   console.group('components');
+    //   for (const component of cat.get('components')) {
+    //     if (Array.isArray(component.toJS())) {
+    //       // TODO: Handle arrays...
+    //       continue;
+    //     }
+    //     this.log('Component Label: ', component.get('label'));
+    //     this.log('Component name: ', component.get('name'));
 
-        console.group('fields');
-        for (const field of component.get('fields')) {
-          this.log('Field Label: ', field.get('label'));
-          this.log('Field name: ', field.get('name'));
-          this.log('Field widget: ', field.get('widget'));
-        }
-        console.groupEnd('fields');
-      } 
+    //     console.group('fields');
+    //     for (const field of component.get('fields')) {
+    //       this.log('Field Label: ', field.get('label'));
+    //       this.log('Field name: ', field.get('name'));
+    //       this.log('Field widget: ', field.get('widget'));
+    //     }
+    //     console.groupEnd('fields');
+    //   }
 
-      console.groupEnd('components');
-    }
-    console.groupEnd('cats')
+    //   console.groupEnd('components');
+    // }
+    // console.groupEnd('cats')
 
     return (
       <div className={classNameWrapper}>
