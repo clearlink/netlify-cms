@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import MDXControl, { NODE_TYPES } from '../src/MDXControl.js';
+import MDXControl, { NODE_TYPES } from 'netlify-cms-widget-mdx/src/MDXControl';
 
 describe('MDXControl', () => {
   const props = {

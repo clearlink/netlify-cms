@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ContentNode from '../src/ContentNode.js';
+import ContentNode from 'netlify-cms-widget-mdx/src/ContentNode';
 
 describe('ContentNode', () => {
   const props = {

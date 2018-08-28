@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import SortableContainer from '../src/SortableContainer.js';
+import SortableContainer from 'netlify-cms-widget-mdx/src/SortableContainer';
 
 describe('components wrapper', () => {
   it('should render without throwing an error', () => {
