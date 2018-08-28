@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { WidgetPreviewContainer } from 'netlify-cms-ui-default';
-import { markdownToHtml } from '../../netlify-cms-widget-markdown/src/serializers';
+import { markdownToHtml } from 'netlify-cms-widget-markdown/src/serializers';
 
-const ComponentsPreview = (props) => {
+const MDXPreview = (props) => {
   if (props.value === null) {
     return null;
   }
@@ -16,8 +16,8 @@ const ComponentsPreview = (props) => {
   )
 };
 
-ComponentsPreview.propTypes = {
+MDXPreview.propTypes = {
   value: PropTypes.string,
 };
 
-export default ComponentsPreview;
+export default MDXPreview;

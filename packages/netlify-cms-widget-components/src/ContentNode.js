@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { getLogger } from './Logger';
+import { getLogger } from 'netlify-cms-widget-components/src/Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
 const StyledContent = styled(TextareaAutosize)`
@@ -23,12 +23,12 @@ const StyledContent = styled(TextareaAutosize)`
 const KEY_CREATE_NODE = 'Enter';
 const KEY_DELETE_NODE = 'Backspace';
 
-class ContentBlock extends PureComponent {
+class ContentNode extends PureComponent {
   constructor(props) {
     super(props);
 
     this.textInput = React.createRef();
-    this.logger = getLogger('ContentBlock', 'yellow');
+    this.logger = getLogger('ContentNode', 'yellow');
     this.log = this.log.bind(this);
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -111,7 +111,7 @@ class ContentBlock extends PureComponent {
   }
 }
 
-ContentBlock.propTypes = {
+ContentNode.propTypes = {
   uuid: PropTypes.string.isRequired,
   currentFocusID: PropTypes.string.isRequired,
   isMarkdown: PropTypes.bool.isRequired,
@@ -124,4 +124,4 @@ ContentBlock.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default ContentBlock;
+export default ContentNode;

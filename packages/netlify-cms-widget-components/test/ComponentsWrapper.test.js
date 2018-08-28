@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import ComponentsWrapper from '../src/ComponentsWrapper.js';
+import SortableContainer from '../src/SortableContainer.js';
 
 describe('components wrapper', () => {
   it('should render without throwing an error', () => {
@@ -25,7 +25,7 @@ describe('components wrapper', () => {
     const mockedSetNodeType = jest.fn();
     const mockedNodeType = {};
     const wrapper = shallow(
-      <ComponentsWrapper
+      <SortableContainer
         items={items}
         onSortEnd={mockedHandleSortEnd}
         useDragHandle={true}

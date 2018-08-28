@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ContentBlock from '../src/ContentBlock.js';
+import ContentNode from '../src/ContentNode.js';
 
-describe('ContentBlock', () => {
+describe('ContentNode', () => {
   const props = {
     addContent: jest.fn(),
     handleBackspace: jest.fn(),
@@ -16,7 +16,7 @@ describe('ContentBlock', () => {
     currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
   };
 
-  const component = mount(<ContentBlock {...props} />);
+  const component = mount(<ContentNode {...props} />);
 
   afterEach(() => {
     component.setProps(props);
@@ -53,7 +53,7 @@ describe('ContentBlock', () => {
     });
   });
 
-  describe('ContentBlock: paste event handling', () => {
+  describe('ContentNode: paste event handling', () => {
     let mockedPasteEvent;
 
     beforeEach(() => {

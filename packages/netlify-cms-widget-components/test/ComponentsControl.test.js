@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ComponentsControl, { NODE_TYPES } from '../src/ComponentsControl.js';
+import MDXControl, { NODE_TYPES } from '../src/MDXControl.js';
 
-describe('ComponentsControl', () => {
+describe('MDXControl', () => {
   const props = {
     field: { get: jest.fn() },
     onChange: jest.fn(),
@@ -10,7 +10,7 @@ describe('ComponentsControl', () => {
     currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
     classNameWrapper: '',
   };
-  const componentsControl = mount(<ComponentsControl {...props} />);
+  const componentsControl = mount(<MDXControl {...props} />);
   const initialState = {
     nodeIsMarkdown: false,
     nodeType: {},

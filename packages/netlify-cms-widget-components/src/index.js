@@ -1,2 +1,2 @@
-export ComponentsControl from './ComponentsControl';
-export ComponentsPreview from './ComponentsPreview';
+export MDXControl from './MDXControl';
+export MDXPreview from './MDXPreview';

@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import ComponentPart from '../src/ComponentPart.js';
+import SortableElement from '../src/SortableElement.js';
 
 describe('component part', () => {
   it('should render without throwing an error', () => {
@@ -15,7 +15,7 @@ describe('component part', () => {
     const mockedNodeType = {};
     const position = 0;
     const wrapper = shallow(
-      <ComponentPart
+      <SortableElement
         key={item.id}
         index={position}
         value={item.value}
@@ -44,7 +44,7 @@ describe('component part', () => {
   //   const mockedSetValue = jest.fn()
   //   const position = 1
   //   const component = mount(
-  //     <ComponentPart
+  //     <SortableElement
   //       key={item.id}
   //       index={position}
   //       value={item.value}

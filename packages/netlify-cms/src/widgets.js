@@ -12,7 +12,7 @@ import { ListControl, ListPreview } from 'netlify-cms-widget-list/src';
 import { ObjectControl, ObjectPreview } from 'netlify-cms-widget-object/src';
 import { RelationControl, RelationPreview } from 'netlify-cms-widget-relation/src';
 import { BooleanControl } from 'netlify-cms-widget-boolean/src';
-import { ComponentsControl, ComponentsPreview } from 'netlify-cms-widget-components/src';
+import { MDXControl, MDXPreview } from 'netlify-cms-widget-components/src';
 
 const { registerWidget } = cms;
 
@@ -27,6 +27,6 @@ registerWidget('date', DateControl, DatePreview);
 registerWidget('datetime', DateTimeControl, DateTimePreview);
 registerWidget('select', SelectControl, SelectPreview);
 registerWidget('object', ObjectControl, ObjectPreview);
-registerWidget('components', ComponentsControl, ComponentsPreview);
+registerWidget('components', MDXControl, MDXPreview);
 registerWidget('relation', RelationControl, RelationPreview);
 registerWidget('boolean', BooleanControl);

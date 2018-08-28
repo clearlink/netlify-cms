@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SortableElement, SortableHandle } from 'react-sortable-hoc';
+import { SortableElement as ReactSortableElement, SortableHandle } from 'react-sortable-hoc';
 import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default';
 
-import ContentBlock from './ContentBlock';
+import ContentNode from './ContentNode';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
 const StyledDragHandle = styled('span')`
@@ -27,7 +27,7 @@ const DragHandle = SortableHandle(() => (
 //  Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.
 // See this issue:
 //  https://github.com/clauderic/react-sortable-hoc/issues/201
-class ComponentPartBase extends React.Component {
+class Element extends React.Component {
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
     const {
@@ -60,7 +60,7 @@ class ComponentPartBase extends React.Component {
     return (
       <div className={style}>
         <DragHandle />
-        <ContentBlock
+        <ContentNode
           uuid={uuid}
           value={value}
           position={position}
@@ -77,9 +77,9 @@ class ComponentPartBase extends React.Component {
   }
 }
 
-const ComponentPart = SortableElement(ComponentPartBase, { withRef: true });
+const SortableElement = ReactSortableElement(Element, { withRef: true });
 
-ComponentPart.propTypes = {
+SortableElement.propTypes = {
   addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
@@ -89,4 +89,4 @@ ComponentPart.propTypes = {
   nodeType: PropTypes.object.isRequired,
 };
 
-export default ComponentPart;
+export default SortableElement;

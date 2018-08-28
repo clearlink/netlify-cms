@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SortableContainer } from 'react-sortable-hoc';
-import ComponentPart from './ComponentPart';
+import { SortableContainer as ReactSortableContainer } from 'react-sortable-hoc';
+import SortableElement from './SortableElement';
 
-const ComponentsWrapper = SortableContainer(
+const SortableContainer = ReactSortableContainer(
   ({
     items,
     currentFocusID,
@@ -18,7 +18,7 @@ const ComponentsWrapper = SortableContainer(
   }) => (
     <div>
       {items.map((item, idx) => (
-        <ComponentPart
+        <SortableElement
           key={item.id}
           uuid={item.id}
           index={idx}
@@ -37,7 +37,7 @@ const ComponentsWrapper = SortableContainer(
   ),
 );
 
-ComponentsWrapper.propTypes = {
+SortableContainer.propTypes = {
   addContent: PropTypes.func.isRequired,
   handleBackspace: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
@@ -46,4 +46,4 @@ ComponentsWrapper.propTypes = {
   nodeType: PropTypes.object.isRequired,
 };
 
-export default ComponentsWrapper;
+export default SortableContainer;

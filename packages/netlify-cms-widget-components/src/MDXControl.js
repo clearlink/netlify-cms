@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
-import ComponentsWrapper from './ComponentsWrapper';
-import { getLogger } from './Logger';
+import SortableContainer from 'netlify-cms-widget-components/src/SortableContainer';
+import { getLogger } from 'netlify-cms-widget-components/src/Logger';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
@@ -18,11 +18,11 @@ export const NODE_TYPES = {
   },
 };
 
-export default class ComponentsControl extends Component {
+export default class MDXControl extends Component {
   constructor(props) {
     super(props);
 
-    this.logger = getLogger('ComponentsControl', 'orange');
+    this.logger = getLogger('MDXControl', 'orange');
     this.log = this.log.bind(this);
     const initItem = this.makeItem('');
 
@@ -163,7 +163,7 @@ export default class ComponentsControl extends Component {
 
     return (
       <div className={classNameWrapper}>
-        <ComponentsWrapper
+        <SortableContainer
           items={this.state.items}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
@@ -180,7 +180,7 @@ export default class ComponentsControl extends Component {
   }
 }
 
-ComponentsControl.propTypes = {
+MDXControl.propTypes = {
   field: PropTypes.object.isRequired,
   classNameWrapper: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
