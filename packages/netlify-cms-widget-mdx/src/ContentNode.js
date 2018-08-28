@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { getLogger } from 'netlify-cms-widget-components/src/Logger';
+import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 
 const StyledContent = styled(TextareaAutosize)`

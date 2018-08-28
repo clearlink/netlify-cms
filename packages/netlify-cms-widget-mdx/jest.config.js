@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'netlify-cms-widget-components',
+  name: 'netlify-cms-widget-mdx',
   testURL: 'http://localhost',
   verbose: true,
   // globalSetup: '<rootDir>/test/setup-global.js',

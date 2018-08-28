@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
-import SortableContainer from 'netlify-cms-widget-components/src/SortableContainer';
-import { getLogger } from 'netlify-cms-widget-components/src/Logger';
+import SortableContainer from './SortableContainer';
+import { getLogger } from './Logger';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {

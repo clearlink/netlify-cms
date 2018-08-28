@@ -12,7 +12,7 @@ import { ListControl, ListPreview } from 'netlify-cms-widget-list/src';
 import { ObjectControl, ObjectPreview } from 'netlify-cms-widget-object/src';
 import { RelationControl, RelationPreview } from 'netlify-cms-widget-relation/src';
 import { BooleanControl } from 'netlify-cms-widget-boolean/src';
-import { MDXControl, MDXPreview } from 'netlify-cms-widget-components/src';
+import { MDXControl, MDXPreview } from 'netlify-cms-widget-mdx/src';
 
 const { registerWidget } = cms;
 
