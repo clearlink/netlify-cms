@@ -5,6 +5,7 @@ import { arrayMove } from 'react-sortable-hoc';
 
 import SortableContainer from './SortableContainer';
 import { getLogger } from './Logger';
+import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
@@ -35,7 +36,7 @@ export default class MDXControl extends Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.removeContent = this.removeContent.bind(this);
-    this.addContent = this.addContent.bind(this);
+    this.addItem = this.addItem.bind(this);
     this.setValue = this.setValue.bind(this);
     this.matchNode = this.matchNode.bind(this);
     this.setNodeType = this.setNodeType.bind(this);
@@ -46,9 +47,13 @@ export default class MDXControl extends Component {
     this.logger.log(...messages);
   }
 
-  makeItem(value, id = '') {
+  makeItem(value, type, id = '') {
     const i = id === '' ? uuid() : id;
-    return { id: i, value };
+    return {
+      id: i,
+      value,
+      type: TYPE_CONTENT,
+    };
   }
 
   handleInput(evt) {
@@ -61,26 +66,26 @@ export default class MDXControl extends Component {
   handleSortEnd = ({ oldIndex, newIndex }) => {
     this.setState(
       {
-        items: arrayMove(this.state.items, oldIndex, newIndex),
+        nodes: arrayMove(this.state.items, oldIndex, newIndex),
       },
       () => {
         // TODO: No sir, I don't like this..
-        this.props.onChange(this.state.items);
+        this.props.onChange(this.state.nodes);
       },
     );
   };
 
-  addContent(index, value = '') {
+  addItem(index, type, value = '') {
     let replace = 0;
     let newValue = null;
     if (value instanceof Array) {
-      newValue = value.map(chunk => this.makeItem(chunk));
+      newValue = value.map(chunk => this.makeItem(chunk, type));
 
       // If we got multiple values and the current node value is empty, use the first value for the current node.
       // If the current node value is NOT empty, the first value will be used to create a new node.
       replace = this.state.items[index].value === '' ? 1 : 0;
     } else {
-      newValue = this.makeItem(value);
+      newValue = this.makeItem(value, type);
     }
     const items = [...this.state.items];
     items.splice.apply(items, [index + 1, replace].concat(newValue));
@@ -164,16 +169,14 @@ export default class MDXControl extends Component {
     return (
       <div className={classNameWrapper}>
         <SortableContainer
-          items={this.state.items}
-          onSortEnd={this.handleSortEnd}
-          useDragHandle={true}
-          currentFocusID={this.state.currentFocusID}
-          addContent={this.addContent}
+          nodes={this.state.items}
+          addContent={this.addItem}
           removeContent={this.removeContent}
+          currentFocusID={this.state.currentFocusID}
           setValue={this.setValue}
           setNodeType={this.setNodeType}
-          isMarkdown={this.state.nodeIsMarkdown}
-          nodeType={this.state.nodeType}
+          onSortEnd={this.handleSortEnd}
+          useDragHandle={true}
         />
       </div>
     );

@@ -5,6 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
+import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
@@ -67,7 +68,7 @@ class ContentNode extends PureComponent {
             return;
           }
         }
-        this.props.addContent(this.props.position, value);
+        this.props.addContent(this.props.position, TYPE_CONTENT, value);
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
@@ -92,7 +93,7 @@ class ContentNode extends PureComponent {
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
-      this.props.addContent(this.props.position, clipboardArray);
+      this.props.addContent(this.props.position, TYPE_CONTENT, clipboardArray);
     }
   }
 
@@ -112,15 +113,13 @@ class ContentNode extends PureComponent {
 }
 
 ContentNode.propTypes = {
+  position: PropTypes.number.isRequired,
   node: PropTypes.object.isRequired,
-  currentFocusID: PropTypes.string.isRequired,
-  isMarkdown: PropTypes.bool.isRequired,
   addContent: PropTypes.func.isRequired,
   removeContent: PropTypes.func.isRequired,
+  currentFocusID: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
   setNodeType: PropTypes.func.isRequired,
-  position: PropTypes.number.isRequired,
-  nodeType: PropTypes.object.isRequired,
 };
 
 export default ContentNode;
