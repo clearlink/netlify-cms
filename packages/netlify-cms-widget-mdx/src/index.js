@@ -1,2 +1,2 @@
-export MDXControl from './MDXControl';
-export MDXPreview from './MDXPreview';
+export { default as MDXControl } from './MDXControl';
+export { default as MDXPreview } from './MDXPreview';
