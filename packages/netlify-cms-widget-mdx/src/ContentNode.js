@@ -46,7 +46,7 @@ class ContentNode extends PureComponent {
 
   focusInputIfCurrentFocus() {
     const textInput = this.textInput.current;
-    if (this.props.uuid === this.props.currentFocusID) {
+    if (this.props.node.id === this.props.currentFocusID) {
       if (textInput) textInput._ref.focus();
     }
   }
@@ -72,7 +72,7 @@ class ContentNode extends PureComponent {
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
           evt.preventDefault();
-          this.props.handleBackspace(this.props.position);
+          this.props.removeContent(this.props.position);
         }
         break;
     }
@@ -104,7 +104,7 @@ class ContentNode extends PureComponent {
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}
         onPaste={this.handlePaste}
-        value={this.props.value}
+        value={this.props.node.value}
         placeholder="add your text here ∩༼˵☯‿☯˵༽つ¤=[]:::::>"
       />
     );
@@ -112,16 +112,15 @@ class ContentNode extends PureComponent {
 }
 
 ContentNode.propTypes = {
-  uuid: PropTypes.string.isRequired,
+  node: PropTypes.object.isRequired,
   currentFocusID: PropTypes.string.isRequired,
   isMarkdown: PropTypes.bool.isRequired,
   addContent: PropTypes.func.isRequired,
-  handleBackspace: PropTypes.func.isRequired,
+  removeContent: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
   setNodeType: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
   nodeType: PropTypes.object.isRequired,
-  value: PropTypes.string.isRequired,
 };
 
 export default ContentNode;

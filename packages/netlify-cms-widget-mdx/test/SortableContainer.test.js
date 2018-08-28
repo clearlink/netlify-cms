@@ -1,5 +1,5 @@
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import {shallow} from 'enzyme';
 import SortableContainer from 'netlify-cms-widget-mdx/src/SortableContainer';
 
 describe('components wrapper', () => {
@@ -30,7 +30,7 @@ describe('components wrapper', () => {
         onSortEnd={mockedHandleSortEnd}
         useDragHandle={true}
         addContent={mockedHandleEnter}
-        handleBackspace={mockedHandleBackspace}
+        removeContent={mockedHandleBackspace}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
         isMarkdown={false}

@@ -31,18 +31,17 @@ class Element extends React.Component {
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
     const {
-      uuid,
-      value,
+      node,
       position,
       currentFocusID,
       addContent,
-      handleBackspace,
+      removeContent,
       setValue,
       setNodeType,
-      nodeIsMarkdown,
       isMarkdown,
       nodeType,
     } = this.props;
+
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -57,21 +56,27 @@ class Element extends React.Component {
         }
       }
     `;
+
+    const sharedProps = {
+      node,
+      position,
+      currentFocusID,
+      addContent,
+      removeContent,
+    }
+
+    const contentNodeProps = {
+      ...sharedProps,
+      setValue,
+      setNodeType,
+      isMarkdown,
+      nodeType,
+    }
+
     return (
       <div className={style}>
         <DragHandle />
-        <ContentNode
-          uuid={uuid}
-          value={value}
-          position={position}
-          currentFocusID={currentFocusID}
-          addContent={addContent}
-          handleBackspace={handleBackspace}
-          setValue={setValue}
-          setNodeType={setNodeType}
-          isMarkdown={isMarkdown}
-          nodeType={nodeType}
-        />
+        <ContentNode {...contentNodeProps} />
       </div>
     );
   }
@@ -81,7 +86,7 @@ const SortableElement = ReactSortableElement(Element, { withRef: true });
 
 SortableElement.propTypes = {
   addContent: PropTypes.func.isRequired,
-  handleBackspace: PropTypes.func.isRequired,
+  removeContent: PropTypes.func.isRequired,
   setValue: PropTypes.func.isRequired,
   position: PropTypes.number.isRequired,
   setNodeType: PropTypes.func.isRequired,

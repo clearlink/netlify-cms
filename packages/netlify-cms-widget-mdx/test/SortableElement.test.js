@@ -1,5 +1,5 @@
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import {shallow} from 'enzyme';
 import SortableElement from '../src/SortableElement.js';
 
 describe('component part', () => {
@@ -21,7 +21,7 @@ describe('component part', () => {
         value={item.value}
         position={position}
         addContent={mockedHandleEnter}
-        handleBackspace={mockedHandleBackspace}
+        removeContent={mockedHandleBackspace}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
         isMarkdown={false}
@@ -50,7 +50,7 @@ describe('component part', () => {
   //       value={item.value}
   //       position={position}
   //       handleEnter={mockedHandleEnter}
-  //       handleBackspace={mockedHandleBackspace}
+  //       removeContent={mockedHandleBackspace}
   //       setValue={mockedSetValue}
   //     />, {disableLifecycleMethods: true}
   //   )

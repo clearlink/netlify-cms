@@ -5,14 +5,16 @@ import ContentNode from 'netlify-cms-widget-mdx/src/ContentNode';
 describe('ContentNode', () => {
   const props = {
     addContent: jest.fn(),
-    handleBackspace: jest.fn(),
+    removeContent: jest.fn(),
     setValue: jest.fn(),
     setNodeType: jest.fn(),
-    value: '',
+    node: {
+      value: '',
+      id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+    },
     nodeType: {},
     isMarkdown: false,
     position: 0,
-    uuid: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
     currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
   };
 
@@ -45,11 +47,11 @@ describe('ContentNode', () => {
       expect(props.addContent).toBeCalledWith(component.props().position, '');
     });
 
-    it('should call handleBackspace when the backspace key is pressed', () => {
+    it('should call removeContent when the backspace key is pressed', () => {
       component.find('textarea').simulate('keyDown', {
         key: 'Backspace',
       });
-      expect(props.handleBackspace).toBeCalledWith(component.props().position);
+      expect(props.removeContent).toBeCalledWith(component.props().position);
     });
   });
 

@@ -169,7 +169,7 @@ export default class MDXControl extends Component {
           useDragHandle={true}
           currentFocusID={this.state.currentFocusID}
           addContent={this.addContent}
-          handleBackspace={this.removeContent}
+          removeContent={this.removeContent}
           setValue={this.setValue}
           setNodeType={this.setNodeType}
           isMarkdown={this.state.nodeIsMarkdown}
