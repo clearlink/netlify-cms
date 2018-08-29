@@ -103,7 +103,7 @@ export default class MDXControl extends Component {
   setValue(index, value) {
     const items = [...this.state.items];
     const id = this.state.items[index].id;
-    items.splice(index, 1, this.makeItem(value, id));
+    items.splice(index, 1, this.makeItem(value, TYPE_CONTENT, id));
     this.setState({ items }, () => {
       this.props.onChange(this.state.items);
     });
