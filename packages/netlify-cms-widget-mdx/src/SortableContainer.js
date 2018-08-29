@@ -6,13 +6,15 @@ import SortableElement from 'netlify-cms-widget-mdx/src/SortableElement';
 
 const SortableContainer = ReactSortableContainer(
   ({
-    nodes,
-    addItem,
-    removeContent,
-    currentFocusID,
-    setValue,
-    setNodeType,
-  }) => (
+     nodes,
+     addItem,
+     removeContent,
+     currentFocusID,
+     setValue,
+     setNodeType,
+     isMarkdown,
+     nodeType,
+   }) => (
     <div>
       {nodes.map((node, idx) => (
         <SortableElement
@@ -25,6 +27,8 @@ const SortableContainer = ReactSortableContainer(
           currentFocusID={currentFocusID}
           setValue={setValue}
           setNodeType={setNodeType}
+          isMarkdown={isMarkdown}
+          nodeType={nodeType}
         />
       ))}
     </div>
@@ -38,6 +42,8 @@ SortableContainer.propTypes = {
   currentFocusID: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
   setNodeType: PropTypes.func.isRequired,
+  isMarkdown: PropTypes.bool.isRequired,
+  nodeType: PropTypes.object.isRequired,
 };
 
 export default SortableContainer;

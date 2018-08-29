@@ -69,6 +69,8 @@ class Element extends React.Component {
       currentFocusID,
       addItem,
       removeContent,
+      isMarkdown,
+      nodeType,
     };
 
     const contentNodeProps = {
@@ -98,6 +100,8 @@ Element.propTypes = {
   currentFocusID: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
   setNodeType: PropTypes.func.isRequired,
+  isMarkdown: PropTypes.bool.isRequired,
+  nodeType: PropTypes.object.isRequired,
 };
 
 export default SortableElement;

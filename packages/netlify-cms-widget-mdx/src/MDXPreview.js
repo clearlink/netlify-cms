@@ -15,7 +15,7 @@ const MDXPreview = props => {
 };
 
 MDXPreview.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.array,
 };
 
 export default MDXPreview;

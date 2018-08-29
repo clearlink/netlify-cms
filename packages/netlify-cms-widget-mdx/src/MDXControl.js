@@ -7,6 +7,7 @@ import SortableContainer from './SortableContainer';
 import { getLogger } from './Logger';
 import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
+// TODO need to improve this.
 export const NODE_TYPE_DEFAULT = {};
 export const NODE_TYPES = {
   listUnordered: {
@@ -66,11 +67,11 @@ export default class MDXControl extends Component {
   handleSortEnd = ({ oldIndex, newIndex }) => {
     this.setState(
       {
-        nodes: arrayMove(this.state.items, oldIndex, newIndex),
+        items: arrayMove(this.state.items, oldIndex, newIndex),
       },
       () => {
         // TODO: No sir, I don't like this..
-        this.props.onChange(this.state.nodes);
+        this.props.onChange(this.state.items);
       },
     );
   };
@@ -177,6 +178,8 @@ export default class MDXControl extends Component {
           setNodeType={this.setNodeType}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
+          isMarkdown={this.state.nodeIsMarkdown}
+          nodeType={this.state.nodeType}
         />
       </div>
     );
