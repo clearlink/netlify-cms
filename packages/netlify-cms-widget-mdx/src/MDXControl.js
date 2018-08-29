@@ -170,7 +170,7 @@ export default class MDXControl extends Component {
       <div className={classNameWrapper}>
         <SortableContainer
           nodes={this.state.items}
-          addContent={this.addItem}
+          addItem={this.addItem}
           removeContent={this.removeContent}
           currentFocusID={this.state.currentFocusID}
           setValue={this.setValue}

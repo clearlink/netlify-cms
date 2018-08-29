@@ -5,6 +5,7 @@ import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default';
 
 import ContentNode from './ContentNode';
+import ComponentNode from './ComponentNode';
 import { colorsRaw } from 'netlify-cms-ui-default';
 import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
@@ -30,7 +31,8 @@ const DragHandle = SortableHandle(() => (
 //  https://github.com/clauderic/react-sortable-hoc/issues/201
 class Element extends React.Component {
   determineNode(type, props) {
-    return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />
+    // return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />;
+    return <ContentNode {...props} />;
   }
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
@@ -38,7 +40,7 @@ class Element extends React.Component {
       node,
       position,
       currentFocusID,
-      addContent,
+      addItem,
       removeContent,
       setValue,
       setNodeType,
@@ -65,7 +67,7 @@ class Element extends React.Component {
       node,
       position,
       currentFocusID,
-      addContent,
+      addItem,
       removeContent,
     };
 
@@ -80,7 +82,7 @@ class Element extends React.Component {
     return (
       <div className={style}>
         <DragHandle />
-        {this.determineNode(node.type)}
+        {this.determineNode(node.type, contentNodeProps)}
       </div>
     );
   }
@@ -88,10 +90,10 @@ class Element extends React.Component {
 
 const SortableElement = ReactSortableElement(Element, { withRef: true });
 
-SortableElement.propTypes = {
+Element.propTypes = {
   position: PropTypes.number.isRequired,
   node: PropTypes.object.isRequired,
-  addContent: PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
   removeContent: PropTypes.func.isRequired,
   currentFocusID: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,

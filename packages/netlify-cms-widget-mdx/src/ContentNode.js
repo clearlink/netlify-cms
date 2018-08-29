@@ -68,7 +68,7 @@ class ContentNode extends PureComponent {
             return;
           }
         }
-        this.props.addContent(this.props.position, TYPE_CONTENT, value);
+        this.props.addItem(this.props.position, TYPE_CONTENT, value);
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
@@ -93,7 +93,7 @@ class ContentNode extends PureComponent {
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
-      this.props.addContent(this.props.position, TYPE_CONTENT, clipboardArray);
+      this.props.addItem(this.props.position, TYPE_CONTENT, clipboardArray);
     }
   }
 
@@ -115,7 +115,7 @@ class ContentNode extends PureComponent {
 ContentNode.propTypes = {
   position: PropTypes.number.isRequired,
   node: PropTypes.object.isRequired,
-  addContent: PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
   removeContent: PropTypes.func.isRequired,
   currentFocusID: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,

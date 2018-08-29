@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
-import SortableContainer from 'netlify-cms-widget-mdx/src/SortableContainer';
+import { shallow } from 'enzyme';
+import SortableContainer from '../src/SortableContainer';
 
 describe('components wrapper', () => {
   it('should render without throwing an error', () => {
@@ -24,13 +24,15 @@ describe('components wrapper', () => {
     const mockedHandleSortEnd = jest.fn();
     const mockedSetNodeType = jest.fn();
     const mockedNodeType = {};
+    const currentFocusID = '5d5e1030-a498-11e8-bde3-e3351b0ad71b';
     const wrapper = shallow(
       <SortableContainer
-        items={items}
+        nodes={items}
         onSortEnd={mockedHandleSortEnd}
         useDragHandle={true}
-        addContent={mockedHandleEnter}
+        addItem={mockedHandleEnter}
         removeContent={mockedHandleBackspace}
+        currentFocusID={currentFocusID}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
         isMarkdown={false}
@@ -38,7 +40,7 @@ describe('components wrapper', () => {
       />,
       {
         disableLifecycleMethods: true,
-      }
+      },
     );
     expect(wrapper.length).toEqual(1);
   });

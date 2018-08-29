@@ -1,10 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ContentNode from 'netlify-cms-widget-mdx/src/ContentNode';
+
+import ContentNode from '../src/ContentNode';
+import { TYPE_CONTENT } from '../src/utils';
 
 describe('ContentNode', () => {
   const props = {
-    addContent: jest.fn(),
+    addItem: jest.fn(),
     removeContent: jest.fn(),
     setValue: jest.fn(),
     setNodeType: jest.fn(),
@@ -40,11 +42,11 @@ describe('ContentNode', () => {
       expect(props.setValue).toBeCalledWith(component.props().position, 'custom value');
     });
 
-    it('should call addContent when the enter key is pressed', () => {
+    it('should call addItem when the enter key is pressed', () => {
       component.find('textarea').simulate('keyDown', {
         key: 'Enter',
       });
-      expect(props.addContent).toBeCalledWith(component.props().position, '');
+      expect(props.addItem).toBeCalledWith(component.props().position, TYPE_CONTENT, '');
     });
 
     it('should call removeContent when the backspace key is pressed', () => {
@@ -72,15 +74,21 @@ describe('ContentNode', () => {
       });
     });
 
-    it('should call addContent with two values when two lines of text are pasted into an empty node', () => {
+    it('should call addItem with two values when two lines of text are pasted into an empty node', () => {
       component.find('textarea').simulate('paste', mockedPasteEvent);
-      expect(props.addContent).toBeCalledWith(component.props().position, ['line1', 'line2']);
+      expect(props.addItem).toBeCalledWith(component.props().position, TYPE_CONTENT, [
+        'line1',
+        'line2',
+      ]);
     });
 
-    it('should call addContent with two values when pasting two lines of text into a node that already has content', () => {
+    it('should call addItem with two values when pasting two lines of text into a node that already has content', () => {
       mockedPasteEvent.target.value = 'existing node content';
       component.find('textarea').simulate('paste', mockedPasteEvent);
-      expect(props.addContent).toBeCalledWith(component.props().position, ['line1', 'line2']);
+      expect(props.addItem).toBeCalledWith(component.props().position, TYPE_CONTENT, [
+        'line1',
+        'line2',
+      ]);
     });
   });
 });

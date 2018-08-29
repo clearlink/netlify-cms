@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import SortableElement from '../src/SortableElement.js';
 
 describe('component part', () => {
@@ -8,6 +8,7 @@ describe('component part', () => {
       id: 'third',
       value: 'three',
     };
+    const currentFocusID = '5d5e1030-a498-11e8-bde3-e3351b0ad71b';
     const mockedHandleEnter = jest.fn();
     const mockedHandleBackspace = jest.fn();
     const mockedSetValue = jest.fn();
@@ -18,10 +19,11 @@ describe('component part', () => {
       <SortableElement
         key={item.id}
         index={position}
-        value={item.value}
+        node={item}
         position={position}
-        addContent={mockedHandleEnter}
+        addItem={mockedHandleEnter}
         removeContent={mockedHandleBackspace}
+        currentFocusID={currentFocusID}
         setValue={mockedSetValue}
         setNodeType={mockedSetNodeType}
         isMarkdown={false}
@@ -29,7 +31,7 @@ describe('component part', () => {
       />,
       {
         disableLifecycleMethods: true,
-      }
+      },
     );
     expect(wrapper.length).toEqual(1);
   });
