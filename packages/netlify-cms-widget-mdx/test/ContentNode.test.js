@@ -2,17 +2,26 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import ContentNode from '../src/ContentNode';
-import { MARKDOWN_TYPES } from '../src/models/MarkdownNode';
+import { MarkdownNode, MARKDOWN_TYPES } from '../src/models/MarkdownNode';
+
+const makeTextNode = (value = '') => {
+  return new MarkdownNode(value, MARKDOWN_TYPES.text)
+};
+
+const makeULNode = (value = '') => {
+  return new MarkdownNode(value, MARKDOWN_TYPES.listUnordered)
+};
+
+const makeOLNode = (value = '') => {
+  return new MarkdownNode(value, MARKDOWN_TYPES.listOrdered)
+};
 
 describe('ContentNode', () => {
+  const node = makeTextNode();
   const props = {
     position: 0,
-    node: {
-      id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
-      type: MARKDOWN_TYPES.text,
-      value: '',
-    },
-    currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+    node: node,
+    currentFocusID: node.id,
     createNode: jest.fn(),
     createNodes: jest.fn(),
     updateNode: jest.fn(),
@@ -53,14 +62,11 @@ describe('ContentNode', () => {
       });
 
       it('should create a new node of the same type as the current node', () => {
+        const node = makeULNode('* text')
         const props = {
           position: 0,
-          node: {
-            id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
-            type: MARKDOWN_TYPES.listUnordered,
-            value: '* text',
-          },
-          currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+          node: node,
+          currentFocusID: node.id,
           createNode: jest.fn(),
           createNodes: jest.fn(),
           updateNode: jest.fn(),
@@ -81,14 +87,11 @@ describe('ContentNode', () => {
       });
 
       it('should change a markdown node back to a text node if the value is just the markdown symbol', () => {
+        const node = makeULNode();
         const props = {
           position: 0,
-          node: {
-            id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
-            type: MARKDOWN_TYPES.listUnordered,
-            value: '* ',
-          },
-          currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+          node: node,
+          currentFocusID: node.id,
           createNode: jest.fn(),
           createNodes: jest.fn(),
           updateNode: jest.fn(),
@@ -169,14 +172,11 @@ describe('ContentNode', () => {
     });
 
     it('should change a markdown node back to a text node when a markdown symbol is cleared', () => {
+      const node = makeULNode('* text');
       const props = {
         position: 0,
-        node: {
-          id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
-          type: MARKDOWN_TYPES.listUnordered,
-          value: '* text',
-        },
-        currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+        node: node,
+        currentFocusID: node.id,
         createNode: jest.fn(),
         createNodes: jest.fn(),
         updateNode: jest.fn(),

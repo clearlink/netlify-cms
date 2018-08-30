@@ -35,8 +35,6 @@ class ContentNode extends PureComponent {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePaste = this.handlePaste.bind(this);
-    this.matchNode = this.matchNode.bind(this);
-    this.getNodeType = this.getNodeType.bind(this);
   }
 
   componentDidMount() {
@@ -70,16 +68,16 @@ class ContentNode extends PureComponent {
         this.log(symbol);
         this.log(value);
 
-        if ((type === MARKDOWN_TYPES.listUnordered || type === MARKDOWN_TYPES.listOrdered)
-          && value === symbol) {
+        if (this.props.node.isEmptyListItem()) {
           this.log('empty');
           // If this is an empty list node, clear the value and change it back to text.
-          this.clearNode();
+          const node = this.props.node.clear();
+          this.props.updateNode(this.props.position, node);
         } else {
           this.log('not empty');
           // Create a new node of the same type as this one.
           // If the user has deleted an existing markdown symbol, the change handler should have already set the correct type.
-          const node = new MarkdownNode(symbol, type);
+          const node = this.props.node.newOfType();
           this.props.createNode(this.props.position, node);
         }
 
@@ -93,30 +91,9 @@ class ContentNode extends PureComponent {
     }
   }
 
-  clearNode() {
-    const node = new MarkdownNode('', MARKDOWN_TYPES.text, this.props.node.id);
-    this.props.updateNode(this.props.position, node);
-  }
-
-  matchNode(value, pattern) {
-    return value.match(pattern) !== null;
-  }
-
-  getNodeType(value) {
-    if (this.matchNode(value, MARKDOWN_TYPES.listUnordered.pattern)) {
-      return MARKDOWN_TYPES.listUnordered;
-    } else if (this.matchNode(value, MARKDOWN_TYPES.listOrdered.pattern)) {
-      return MARKDOWN_TYPES.listOrdered;
-    } else {
-      return MARKDOWN_TYPES.text;
-    }
-  }
-
   handleChange(evt) {
     // Copy the current node, but update the value and type if necessary.
-    const newValue = evt.target.value;
-    const newType = this.getNodeType(newValue);
-    const node = new MarkdownNode(newValue, newType, this.props.node.id);
+    const node = this.props.node.setValue(evt.target.value);
     this.props.updateNode(this.props.position, node);
   }
 
@@ -154,7 +131,7 @@ class ContentNode extends PureComponent {
 
 ContentNode.propTypes = {
   position: PropTypes.number.isRequired,
-  node: PropTypes.object.isRequired,
+  node: PropTypes.instanceOf(MarkdownNode).isRequired,
   currentFocusID: PropTypes.string.isRequired,
   createNode: PropTypes.func.isRequired,
   createNodes: PropTypes.func.isRequired,
