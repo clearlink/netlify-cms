@@ -61,13 +61,6 @@ class ContentNode extends PureComponent {
       case KEY_CREATE_NODE:
         evt.preventDefault();
 
-        const type = this.props.node.type;
-        const symbol = this.props.node.type.symbol;
-        const value = evt.target.value;
-        this.log(type);
-        this.log(symbol);
-        this.log(value);
-
         if (this.props.node.isEmptyListItem()) {
           this.log('empty');
           // If this is an empty list node, clear the value and change it back to text.
