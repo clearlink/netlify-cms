@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { BaseNode, MarkdownNode, ComponentNode, MARKDOWN_TYPES, COMPONENT_TYPES } from '../src/utils';
+import { BaseNode } from '../src/models/BaseNode';
+import { MarkdownNode, MARKDOWN_TYPES } from '../src/models/MarkdownNode';
+import { ComponentNode, COMPONENT_TYPES } from '../src/models/ComponentNode';
 
 describe('BaseNode Class', () => {
 

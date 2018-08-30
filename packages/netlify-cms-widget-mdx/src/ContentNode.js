@@ -5,8 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
-import { MarkdownNode, MARKDOWN_TYPES } from './utils';
-import { NODE_TYPE_DEFAULT, NODE_TYPES } from "./MDXControl";
+import { MarkdownNode, MARKDOWN_TYPES } from './models/MarkdownNode';
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
@@ -75,8 +74,7 @@ class ContentNode extends PureComponent {
           && value === symbol) {
           this.log('empty');
           // If this is an empty list node, clear the value and change it back to text.
-          const node = new MarkdownNode('', MARKDOWN_TYPES.text, this.props.node.id);
-          this.props.updateNode(this.props.position, node);
+          this.clearNode();
         } else {
           this.log('not empty');
           // Create a new node of the same type as this one.
@@ -93,6 +91,11 @@ class ContentNode extends PureComponent {
         }
         break;
     }
+  }
+
+  clearNode() {
+    const node = new MarkdownNode('', MARKDOWN_TYPES.text, this.props.node.id);
+    this.props.updateNode(this.props.position, node);
   }
 
   matchNode(value, pattern) {

@@ -5,9 +5,7 @@ import styled, { css } from 'react-emotion';
 import { Icon } from 'netlify-cms-ui-default';
 
 import ContentNode from './ContentNode';
-import ComponentNode from './ComponentNode';
 import { colorsRaw } from 'netlify-cms-ui-default';
-import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
 const StyledDragHandle = styled('span')`
   position: absolute;
@@ -20,7 +18,7 @@ const StyledDragHandle = styled('span')`
 
 const DragHandle = SortableHandle(() => (
   <StyledDragHandle>
-    <Icon type="drag-handle" size="small" />
+    <Icon type="drag-handle" size="small"/>
   </StyledDragHandle>
 ));
 
@@ -35,6 +33,7 @@ class Element extends React.Component {
     // return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />;
     return <ContentNode {...props} />;
   }
+
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
     const {
@@ -79,7 +78,7 @@ class Element extends React.Component {
     // @TODO useDragHandle
     return (
       <div className={style}>
-        <DragHandle />
+        <DragHandle/>
         {this.determineNode(node.type, contentNodeProps)}
       </div>
     );

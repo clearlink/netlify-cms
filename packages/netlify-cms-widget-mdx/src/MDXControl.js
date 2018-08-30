@@ -4,20 +4,7 @@ import { arrayMove } from 'react-sortable-hoc';
 
 import SortableContainer from './SortableContainer';
 import { getLogger } from './Logger';
-import { MarkdownNode, MARKDOWN_TYPES } from './utils';
-
-// TODO need to improve this.
-export const NODE_TYPE_DEFAULT = {};
-export const NODE_TYPES = {
-  listUnordered: {
-    symbol: '* ',
-    pattern: /^\* ./,
-  },
-  listOrdered: {
-    symbol: '* ',
-    pattern: /^\d\. ./,
-  },
-};
+import { MarkdownNode, MARKDOWN_TYPES } from './models/MarkdownNode';
 
 export default class MDXControl extends Component {
   constructor(props) {

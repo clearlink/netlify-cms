@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import ContentNode from '../src/ContentNode';
-import { MARKDOWN_TYPES } from '../src/utils';
+import { MARKDOWN_TYPES } from '../src/models/MarkdownNode';
 
 describe('ContentNode', () => {
   const props = {
