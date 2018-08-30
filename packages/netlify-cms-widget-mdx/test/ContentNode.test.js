@@ -5,6 +5,7 @@ import ContentNode from '../src/ContentNode';
 import { TYPE_CONTENT } from '../src/utils';
 
 describe('ContentNode', () => {
+  const mockedID = '5d5e1030-a498-11e8-bde3-e3351b0ad71b';
   const props = {
     addItem: jest.fn(),
     removeContent: jest.fn(),
@@ -12,12 +13,12 @@ describe('ContentNode', () => {
     setNodeType: jest.fn(),
     node: {
       value: '',
-      id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+      id: mockedID,
     },
     nodeType: {},
     isMarkdown: false,
     position: 0,
-    currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+    currentFocusID: mockedID,
   };
 
   const component = mount(<ContentNode {...props} />);

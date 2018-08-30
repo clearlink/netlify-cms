@@ -4,6 +4,7 @@ import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
 import SortableContainer from './SortableContainer';
+import ContentNode from './ContentNode';
 import { getLogger } from './Logger';
 import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
 
@@ -42,6 +43,7 @@ export default class MDXControl extends Component {
     this.matchNode = this.matchNode.bind(this);
     this.setNodeType = this.setNodeType.bind(this);
     this.makeItem = this.makeItem.bind(this);
+    this.renderContentNodes = this.renderContentNodes.bind(this);
   }
 
   log(...messages) {
@@ -133,53 +135,33 @@ export default class MDXControl extends Component {
     }
   }
 
+  renderContentNodes() {
+    return this.state.items.map((node, idx) => (
+      <ContentNode
+        key={node.id}
+        index={idx}
+        position={idx}
+        node={node}
+        addItem={this.addItem}
+        removeContent={this.removeContent}
+        currentFocusID={this.state.currentFocusID}
+        setValue={this.setValue}
+        setNodeType={this.setNodeType}
+        isMarkdown={this.state.nodeIsMarkdown}
+        nodeType={this.state.nodeType}
+      />
+    ));
+  }
+
   render() {
-    const { field, classNameWrapper } = this.props;
-    const cats = field.get('categories');
-
-    // console.log(cats.getIn('components'));
-    // console.group('cats');
-
-    // for (const cat of cats) {
-    //   this.log('Category Label: ', cat.get('label'));
-    //   this.log('Category Name: ', cat.get('name'));
-    //   this.log('Category Components: ', cat.get('components'));
-
-    //   console.group('components');
-    //   for (const component of cat.get('components')) {
-    //     if (Array.isArray(component.toJS())) {
-    //       // TODO: Handle arrays...
-    //       continue;
-    //     }
-    //     this.log('Component Label: ', component.get('label'));
-    //     this.log('Component name: ', component.get('name'));
-
-    //     console.group('fields');
-    //     for (const field of component.get('fields')) {
-    //       this.log('Field Label: ', field.get('label'));
-    //       this.log('Field name: ', field.get('name'));
-    //       this.log('Field widget: ', field.get('widget'));
-    //     }
-    //     console.groupEnd('fields');
-    //   }
-
-    //   console.groupEnd('components');
-    // }
-    // console.groupEnd('cats')
+    const { classNameWrapper } = this.props;
 
     return (
       <div className={classNameWrapper}>
         <SortableContainer
-          nodes={this.state.items}
-          addItem={this.addItem}
-          removeContent={this.removeContent}
-          currentFocusID={this.state.currentFocusID}
-          setValue={this.setValue}
-          setNodeType={this.setNodeType}
+          renderContentNodes={this.renderContentNodes}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
-          isMarkdown={this.state.nodeIsMarkdown}
-          nodeType={this.state.nodeType}
         />
       </div>
     );

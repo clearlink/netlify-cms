@@ -1,11 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
+import { SortableElement as ReactSortableElement } from 'react-sortable-hoc';
 
+import DragHandle from './DragHandle';
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
+
+const KEY_CREATE_NODE = 'Enter';
+const KEY_DELETE_NODE = 'Backspace';
+
+const style = css`
+  position: relative;
+  margin: 1px 0;
+
+  &:hover {
+    > span {
+      color: ${colorsRaw.grayDark};
+    }
+
+    > textarea {
+      border-color: ${colorsRaw.grayLight};
+    }
+  }
+`;
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
@@ -20,9 +40,6 @@ const StyledContent = styled(TextareaAutosize)`
     outline: none;
   }
 `;
-
-const KEY_CREATE_NODE = 'Enter';
-const KEY_DELETE_NODE = 'Backspace';
 
 class ContentNode extends PureComponent {
   constructor(props) {
@@ -57,10 +74,10 @@ class ContentNode extends PureComponent {
   }
 
   handleKeyDown(evt) {
+    let value = '';
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        let value = '';
         if (this.props.isMarkdown) {
           value = this.props.nodeType.symbol;
           if (evt.target.value === value) {
@@ -99,15 +116,18 @@ class ContentNode extends PureComponent {
 
   render() {
     return (
-      <StyledContent
-        innerRef={this.textInput}
-        id={`block-${this.props.position}`}
-        onKeyDown={this.handleKeyDown}
-        onChange={this.handleChange}
-        onPaste={this.handlePaste}
-        value={this.props.node.value}
-        placeholder="add your text here ∩༼˵☯‿☯˵༽つ¤=[]:::::>"
-      />
+      <div className={style}>
+        <DragHandle />
+        <StyledContent
+          innerRef={this.textInput}
+          id={`block-${this.props.position}`}
+          onKeyDown={this.handleKeyDown}
+          onChange={this.handleChange}
+          onPaste={this.handlePaste}
+          value={this.props.node.value}
+          placeholder="add your text here ∩༼˵☯‿☯˵༽つ¤=[]:::::>"
+        />
+      </div>
     );
   }
 }
@@ -124,4 +144,4 @@ ContentNode.propTypes = {
   nodeType: PropTypes.object.isRequired,
 };
 
-export default ContentNode;
+export default ReactSortableElement(ContentNode, { withRef: true });
