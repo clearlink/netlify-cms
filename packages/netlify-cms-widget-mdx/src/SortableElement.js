@@ -31,8 +31,7 @@ const DragHandle = SortableHandle(() => (
 //  https://github.com/clauderic/react-sortable-hoc/issues/201
 class Element extends React.Component {
   determineNode(type, props) {
-    // return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />;
-    return <ContentNode {...props} />;
+    return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />;
   }
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
