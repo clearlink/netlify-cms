@@ -27,11 +27,12 @@ export default class MDXControl extends Component {
     this.logger = getLogger('MDXControl', 'orange');
     this.log = this.log.bind(this);
     const initItem = this.makeItem('');
+    const initComponent = this.makeItem('', TYPE_COMPONENT);
 
     this.state = {
       nodeIsMarkdown: false,
       nodeType: NODE_TYPE_DEFAULT,
-      items: [initItem],
+      items: [initItem, initComponent],
       currentFocusID: initItem.id,
     };
 
@@ -48,12 +49,13 @@ export default class MDXControl extends Component {
     this.logger.log(...messages);
   }
 
-  makeItem(value, type, id = '') {
+  makeItem(value, type = TYPE_CONTENT, id = '') {
     const i = id === '' ? uuid() : id;
     return {
       id: i,
       value,
-      type: TYPE_CONTENT,
+      type,
+      field: this.props.field,
     };
   }
 
