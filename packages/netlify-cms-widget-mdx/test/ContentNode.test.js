@@ -52,7 +52,7 @@ describe('ContentNode', () => {
         expect(arg2.type).toBe(component.props().node.type);
       });
 
-      it('should call create a new node of the same type as the current node', () => {
+      it('should create a new node of the same type as the current node', () => {
         const props = {
           position: 0,
           node: {
@@ -78,6 +78,35 @@ describe('ContentNode', () => {
         expect(arg1).toBe(component.props().position);
         expect(arg2.value).toBe(MARKDOWN_TYPES.listUnordered.symbol);
         expect(arg2.type).toBe(component.props().node.type);
+      });
+
+      it('should change a markdown node back to a text node if the value is just the markdown symbol', () => {
+        const props = {
+          position: 0,
+          node: {
+            id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+            type: MARKDOWN_TYPES.listUnordered,
+            value: '* ',
+          },
+          currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+          createNode: jest.fn(),
+          createNodes: jest.fn(),
+          updateNode: jest.fn(),
+          removeNode: jest.fn(),
+        };
+        const component = mount(<ContentNode {...props} />);
+        component.find('textarea').simulate('keyDown', {
+          key: 'Enter',
+        });
+        expect(props.updateNode).toBeCalled();
+        // Since we are using test-specific props in this test, this will be the *first* call to props.updateNode, not the second.
+        const call = props.updateNode.mock.calls[0];
+        const arg1 = call[0];
+        const arg2 = call[1];
+        expect(arg1).toBe(component.props().position);
+        expect(arg2.value).toBe('');
+        expect(arg2.type).toBe(MARKDOWN_TYPES.text);
+        expect(component.props().currentFocusID).toBe(props.node.id);
       });
     });
 

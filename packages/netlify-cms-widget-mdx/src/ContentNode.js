@@ -63,10 +63,28 @@ class ContentNode extends PureComponent {
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        // Create a new node of the same type as this one.
-        // If the user has deleted an existing markdown symbol, the change handler should have already set the correct type.
-        const node = new MarkdownNode(this.props.node.type.symbol, this.props.node.type);
-        this.props.createNode(this.props.position, node);
+
+        const type = this.props.node.type;
+        const symbol = this.props.node.type.symbol;
+        const value = evt.target.value;
+        this.log(type);
+        this.log(symbol);
+        this.log(value);
+
+        if ((type === MARKDOWN_TYPES.listUnordered || type === MARKDOWN_TYPES.listOrdered)
+          && value === symbol) {
+          this.log('empty');
+          // If this is an empty list node, clear the value and change it back to text.
+          const node = new MarkdownNode('', MARKDOWN_TYPES.text, this.props.node.id);
+          this.props.updateNode(this.props.position, node);
+        } else {
+          this.log('not empty');
+          // Create a new node of the same type as this one.
+          // If the user has deleted an existing markdown symbol, the change handler should have already set the correct type.
+          const node = new MarkdownNode(symbol, type);
+          this.props.createNode(this.props.position, node);
+        }
+
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
@@ -112,7 +130,7 @@ class ContentNode extends PureComponent {
         // @TODO handle other types.
         return new MarkdownNode(value, MARKDOWN_TYPES.text);
       });
-      this.props.createNodes(this.props.position, nodes)
+      this.props.createNodes(this.props.position, nodes);
     }
   }
 
