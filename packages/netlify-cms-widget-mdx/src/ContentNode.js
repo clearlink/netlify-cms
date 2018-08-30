@@ -1,12 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import TextareaAutosize from 'react-textarea-autosize';
+import { SortableElement as ReactSortableElement } from 'react-sortable-hoc';
 
+import DragHandle from './DragHandle';
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
 import { MarkdownNode, MARKDOWN_TYPES } from './utils';
-import { NODE_TYPE_DEFAULT, NODE_TYPES } from "./MDXControl";
+
+const KEY_CREATE_NODE = 'Enter';
+const KEY_DELETE_NODE = 'Backspace';
+
+const style = css`
+  position: relative;
+  margin: 1px 0;
+
+  &:hover {
+    > span {
+      color: ${colorsRaw.grayDark};
+    }
+
+    > textarea {
+      border-color: ${colorsRaw.grayLight};
+    }
+  }
+`;
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
@@ -21,9 +40,6 @@ const StyledContent = styled(TextareaAutosize)`
     outline: none;
   }
 `;
-
-const KEY_CREATE_NODE = 'Enter';
-const KEY_DELETE_NODE = 'Backspace';
 
 class ContentNode extends PureComponent {
   constructor(props) {
@@ -61,7 +77,7 @@ class ContentNode extends PureComponent {
 
   handleKeyDown(evt) {
     switch (evt.key) {
-      case KEY_CREATE_NODE:
+      case KEY_CREATE_NODE: {
         evt.preventDefault();
 
         const type = this.props.node.type;
@@ -71,8 +87,10 @@ class ContentNode extends PureComponent {
         this.log(symbol);
         this.log(value);
 
-        if ((type === MARKDOWN_TYPES.listUnordered || type === MARKDOWN_TYPES.listOrdered)
-          && value === symbol) {
+        if (
+          (type === MARKDOWN_TYPES.listUnordered || type === MARKDOWN_TYPES.listOrdered) &&
+          value === symbol
+        ) {
           this.log('empty');
           // If this is an empty list node, clear the value and change it back to text.
           const node = new MarkdownNode('', MARKDOWN_TYPES.text, this.props.node.id);
@@ -86,12 +104,14 @@ class ContentNode extends PureComponent {
         }
 
         break;
-      case KEY_DELETE_NODE:
+      }
+      case KEY_DELETE_NODE: {
         if (evt.target.value === '') {
           evt.preventDefault();
           this.props.removeNode(this.props.position);
         }
         break;
+      }
     }
   }
 
@@ -126,7 +146,7 @@ class ContentNode extends PureComponent {
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
-      const nodes = clipboardArray.map((value, index) => {
+      const nodes = clipboardArray.map(value => {
         // @TODO handle other types.
         return new MarkdownNode(value, MARKDOWN_TYPES.text);
       });
@@ -136,15 +156,18 @@ class ContentNode extends PureComponent {
 
   render() {
     return (
-      <StyledContent
-        innerRef={this.textInput}
-        id={`block-${this.props.position}`}
-        onKeyDown={this.handleKeyDown}
-        onChange={this.handleChange}
-        onPaste={this.handlePaste}
-        value={this.props.node.value}
-        placeholder="add your text here ∩༼˵☯‿☯˵༽つ¤=[]:::::>"
-      />
+      <div className={style}>
+        <DragHandle />
+        <StyledContent
+          innerRef={this.textInput}
+          id={`block-${this.props.position}`}
+          onKeyDown={this.handleKeyDown}
+          onChange={this.handleChange}
+          onPaste={this.handlePaste}
+          value={this.props.node.value}
+          placeholder="add your text here ∩༼˵☯‿☯˵༽つ¤=[]:::::>"
+        />
+      </div>
     );
   }
 }
@@ -159,4 +182,4 @@ ContentNode.propTypes = {
   removeNode: PropTypes.func.isRequired,
 };
 
-export default ContentNode;
+export default ReactSortableElement(ContentNode, { withRef: true });

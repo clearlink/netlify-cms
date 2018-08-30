@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { arrayMove } from 'react-sortable-hoc';
 
 import SortableContainer from './SortableContainer';
+import ContentNode from './ContentNode';
 import { getLogger } from './Logger';
 import { MarkdownNode, MARKDOWN_TYPES } from './utils';
 
@@ -37,6 +38,7 @@ export default class MDXControl extends Component {
     this.createNodes = this.createNodes.bind(this);
     this.updateNode = this.updateNode.bind(this);
     this.removeNode = this.removeNode.bind(this);
+    this.renderContentNodes = this.renderContentNodes.bind(this);
   }
 
   log(...messages) {
@@ -71,7 +73,6 @@ export default class MDXControl extends Component {
 
   // Add multiple nodes.
   createNodes(index, nodes) {
-
     // If we got multiple values and the current node value is empty, use the first value for the current node.
     // If the current node value is NOT empty, the first value will be used to create a new node.
     const replace = this.state.items[index].value === '' ? 1 : 0;
@@ -102,47 +103,31 @@ export default class MDXControl extends Component {
     this.setState({ items, currentFocusID: items[temp].id });
   }
 
-  render() {
-    const { field, classNameWrapper } = this.props;
-    const cats = field.get('categories');
+  renderContentNodes() {
+    return this.state.items.map((node, idx) => (
+      <ContentNode
+        key={node.id}
+        index={idx}
+        position={idx}
+        node={node}
+        createNode={this.createNode}
+        createNodes={this.createNodes}
+        updateNode={this.updateNode}
+        removeNode={this.removeNode}
+        currentFocusID={this.state.currentFocusID}
+      />
+    ));
+  }
 
-    // console.log(cats.getIn('components'));
-    // console.group('cats');
-    // for (const cat of cats) {
-    //   this.log('Category Label: ', cat.get('label'));
-    //   this.log('Category Name: ', cat.get('name'));
-    //   this.log('Category Components: ', cat.get('components'));
-    //   console.group('components');
-    //   for (const component of cat.get('components')) {
-    //     if (Array.isArray(component.toJS())) {
-    //       // TODO: Handle arrays...
-    //       continue;
-    //     }
-    //     this.log('Component Label: ', component.get('label'));
-    //     this.log('Component name: ', component.get('name'));
-    //     console.group('fields');
-    //     for (const field of component.get('fields')) {
-    //       this.log('Field Label: ', field.get('label'));
-    //       this.log('Field name: ', field.get('name'));
-    //       this.log('Field widget: ', field.get('widget'));
-    //     }
-    //     console.groupEnd('fields');
-    //   }
-    //   console.groupEnd('components');
-    // }
-    // console.groupEnd('cats')
+  render() {
+    const { classNameWrapper } = this.props;
 
     return (
       <div className={classNameWrapper}>
         <SortableContainer
+          renderContentNodes={this.renderContentNodes}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
-          currentFocusID={this.state.currentFocusID}
-          nodes={this.state.items}
-          createNode={this.createNode}
-          createNodes={this.createNodes}
-          updateNode={this.updateNode}
-          removeNode={this.removeNode}
         />
       </div>
     );

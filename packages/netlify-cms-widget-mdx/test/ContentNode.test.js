@@ -5,14 +5,15 @@ import ContentNode from '../src/ContentNode';
 import { MARKDOWN_TYPES } from '../src/utils';
 
 describe('ContentNode', () => {
+  const mockedID = '5d5e1030-a498-11e8-bde3-e3351b0ad71b';
   const props = {
     position: 0,
     node: {
-      id: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+      id: mockedID,
       type: MARKDOWN_TYPES.text,
       value: '',
     },
-    currentFocusID: '5d5e1030-a498-11e8-bde3-e3351b0ad71b',
+    currentFocusID: mockedID,
     createNode: jest.fn(),
     createNodes: jest.fn(),
     updateNode: jest.fn(),
@@ -36,9 +37,7 @@ describe('ContentNode', () => {
   // Because of this, we can't always use toBeCalledWith() anymore.
 
   describe('handleKeyDown behavior', () => {
-
     describe('when the enter key is pressed', () => {
-
       it('should call createNode', () => {
         component.find('textarea').simulate('keyDown', {
           key: 'Enter',
@@ -121,7 +120,6 @@ describe('ContentNode', () => {
   });
 
   describe('handleChange behavior', () => {
-
     it('should call updateNode on value change', () => {
       component.find('textarea').simulate('change', {
         target: {
