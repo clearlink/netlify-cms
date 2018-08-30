@@ -22,7 +22,7 @@ export class BaseNode {
 
 export const MARKDOWN_TYPES = {
   text: {
-    symbol: null,
+    symbol: '',
     pattern: null,
   },
   listUnordered: {
@@ -30,7 +30,7 @@ export const MARKDOWN_TYPES = {
     pattern: /^\* ./,
   },
   listOrdered: {
-    symbol: '* ',
+    symbol: '1. ',
     pattern: /^\d\. ./,
   },
 };

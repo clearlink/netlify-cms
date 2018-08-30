@@ -30,6 +30,7 @@ const DragHandle = SortableHandle(() => (
 // See this issue:
 //  https://github.com/clauderic/react-sortable-hoc/issues/201
 class Element extends React.Component {
+  // @TODO finish this.
   determineNode(type, props) {
     // return type === TYPE_CONTENT ? <ContentNode {...props} /> : <ComponentNode {...props} />;
     return <ContentNode {...props} />;
@@ -37,15 +38,13 @@ class Element extends React.Component {
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
     const {
-      node,
       position,
       currentFocusID,
-      addItem,
-      removeContent,
-      setValue,
-      setNodeType,
-      isMarkdown,
-      nodeType,
+      node,
+      createNode,
+      createNodes,
+      updateNode,
+      removeNode,
     } = this.props;
 
     const style = css`
@@ -64,23 +63,20 @@ class Element extends React.Component {
     `;
 
     const sharedProps = {
-      node,
       position,
       currentFocusID,
-      addItem,
-      removeContent,
-      isMarkdown,
-      nodeType,
+      node,
     };
 
     const contentNodeProps = {
       ...sharedProps,
-      setValue,
-      setNodeType,
-      isMarkdown,
-      nodeType,
+      createNode,
+      createNodes,
+      updateNode,
+      removeNode,
     };
 
+    // @TODO useDragHandle
     return (
       <div className={style}>
         <DragHandle />
@@ -93,15 +89,14 @@ class Element extends React.Component {
 const SortableElement = ReactSortableElement(Element, { withRef: true });
 
 Element.propTypes = {
+  // useDragHandle: PropTypes.bool.isRequired,
   position: PropTypes.number.isRequired,
-  node: PropTypes.object.isRequired,
-  addItem: PropTypes.func.isRequired,
-  removeContent: PropTypes.func.isRequired,
   currentFocusID: PropTypes.string.isRequired,
-  setValue: PropTypes.func.isRequired,
-  setNodeType: PropTypes.func.isRequired,
-  isMarkdown: PropTypes.bool.isRequired,
-  nodeType: PropTypes.object.isRequired,
+  node: PropTypes.object.isRequired,
+  createNode: PropTypes.func.isRequired,
+  createNodes: PropTypes.func.isRequired,
+  updateNode: PropTypes.func.isRequired,
+  removeNode: PropTypes.func.isRequired,
 };
 
 export default SortableElement;

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import uuid from 'uuid/v4';
 import { arrayMove } from 'react-sortable-hoc';
 
 import SortableContainer from './SortableContainer';
 import { getLogger } from './Logger';
-import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
+import { MarkdownNode, MARKDOWN_TYPES } from './utils';
 
 // TODO need to improve this.
 export const NODE_TYPE_DEFAULT = {};
@@ -26,35 +25,22 @@ export default class MDXControl extends Component {
 
     this.logger = getLogger('MDXControl', 'orange');
     this.log = this.log.bind(this);
-    const initItem = this.makeItem('');
+    const initItem = new MarkdownNode('', MARKDOWN_TYPES.text);
 
     this.state = {
-      nodeIsMarkdown: false,
-      nodeType: NODE_TYPE_DEFAULT,
-      items: [initItem],
       currentFocusID: initItem.id,
+      items: [initItem],
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.removeContent = this.removeContent.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.setValue = this.setValue.bind(this);
-    this.matchNode = this.matchNode.bind(this);
-    this.setNodeType = this.setNodeType.bind(this);
-    this.makeItem = this.makeItem.bind(this);
+    this.createNode = this.createNode.bind(this);
+    this.createNodes = this.createNodes.bind(this);
+    this.updateNode = this.updateNode.bind(this);
+    this.removeNode = this.removeNode.bind(this);
   }
 
   log(...messages) {
     this.logger.log(...messages);
-  }
-
-  makeItem(value, type, id = '') {
-    const i = id === '' ? uuid() : id;
-    return {
-      id: i,
-      value,
-      type: TYPE_CONTENT,
-    };
   }
 
   handleInput(evt) {
@@ -76,61 +62,44 @@ export default class MDXControl extends Component {
     );
   };
 
-  addItem(index, type, value = '') {
-    let replace = 0;
-    let newValue = null;
-    if (value instanceof Array) {
-      newValue = value.map(chunk => this.makeItem(chunk, type));
-
-      // If we got multiple values and the current node value is empty, use the first value for the current node.
-      // If the current node value is NOT empty, the first value will be used to create a new node.
-      replace = this.state.items[index].value === '' ? 1 : 0;
-    } else {
-      newValue = this.makeItem(value, type);
-    }
+  // Add a node.
+  createNode(index, node) {
     const items = [...this.state.items];
-    items.splice.apply(items, [index + 1, replace].concat(newValue));
-    this.setState({ items, currentFocusID: newValue.id });
+    items.splice.apply(items, [index + 1, 0].concat(node));
+    this.setState({ items, currentFocusID: node.id });
   }
 
-  removeContent(index) {
+  // Add multiple nodes.
+  createNodes(index, nodes) {
+
+    // If we got multiple values and the current node value is empty, use the first value for the current node.
+    // If the current node value is NOT empty, the first value will be used to create a new node.
+    const replace = this.state.items[index].value === '' ? 1 : 0;
+
     const items = [...this.state.items];
-    if (items.length <= 1) return;
-    const temp = index === 0 ? 0 : index - 1;
-    items.splice(index, 1);
-    this.setState({ items, currentFocusID: items[temp].id });
+    items.splice.apply(items, [index + 1, replace].concat(nodes));
+    // Get the last node so that we can set the focus to it.
+    // pop() mutates the array, so call slice() first to get a copy.
+    const lastNode = nodes.slice().pop();
+    this.setState({ items, currentFocusID: lastNode.id });
   }
 
-  setValue(index, value) {
+  // Update the value of an existing node.
+  updateNode(index, node) {
     const items = [...this.state.items];
-    const id = this.state.items[index].id;
-    items.splice(index, 1, this.makeItem(value, TYPE_CONTENT, id));
+    items.splice(index, 1, node);
     this.setState({ items }, () => {
       this.props.onChange(this.state.items);
     });
   }
 
-  matchNode(value, pattern) {
-    return value.match(pattern) !== null;
-  }
-
-  setNodeType(value) {
-    if (this.matchNode(value, NODE_TYPES.listUnordered.pattern)) {
-      this.setState({
-        nodeIsMarkdown: true,
-        nodeType: NODE_TYPES.listUnordered,
-      });
-    } else if (this.matchNode(value, NODE_TYPES.listOrdered.pattern)) {
-      this.setState({
-        nodeIsMarkdown: true,
-        nodeType: NODE_TYPES.listOrdered,
-      });
-    } else {
-      this.setState({
-        nodeIsMarkdown: true,
-        nodeType: NODE_TYPE_DEFAULT,
-      });
-    }
+  // Remove a node.
+  removeNode(index) {
+    const items = [...this.state.items];
+    if (items.length <= 1) return;
+    const temp = index === 0 ? 0 : index - 1;
+    items.splice(index, 1);
+    this.setState({ items, currentFocusID: items[temp].id });
   }
 
   render() {
@@ -139,12 +108,10 @@ export default class MDXControl extends Component {
 
     // console.log(cats.getIn('components'));
     // console.group('cats');
-
     // for (const cat of cats) {
     //   this.log('Category Label: ', cat.get('label'));
     //   this.log('Category Name: ', cat.get('name'));
     //   this.log('Category Components: ', cat.get('components'));
-
     //   console.group('components');
     //   for (const component of cat.get('components')) {
     //     if (Array.isArray(component.toJS())) {
@@ -153,7 +120,6 @@ export default class MDXControl extends Component {
     //     }
     //     this.log('Component Label: ', component.get('label'));
     //     this.log('Component name: ', component.get('name'));
-
     //     console.group('fields');
     //     for (const field of component.get('fields')) {
     //       this.log('Field Label: ', field.get('label'));
@@ -162,7 +128,6 @@ export default class MDXControl extends Component {
     //     }
     //     console.groupEnd('fields');
     //   }
-
     //   console.groupEnd('components');
     // }
     // console.groupEnd('cats')
@@ -170,16 +135,14 @@ export default class MDXControl extends Component {
     return (
       <div className={classNameWrapper}>
         <SortableContainer
-          nodes={this.state.items}
-          addItem={this.addItem}
-          removeContent={this.removeContent}
-          currentFocusID={this.state.currentFocusID}
-          setValue={this.setValue}
-          setNodeType={this.setNodeType}
           onSortEnd={this.handleSortEnd}
           useDragHandle={true}
-          isMarkdown={this.state.nodeIsMarkdown}
-          nodeType={this.state.nodeType}
+          currentFocusID={this.state.currentFocusID}
+          nodes={this.state.items}
+          createNode={this.createNode}
+          createNodes={this.createNodes}
+          updateNode={this.updateNode}
+          removeNode={this.removeNode}
         />
       </div>
     );

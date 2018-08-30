@@ -5,7 +5,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { getLogger } from './Logger';
 import { colorsRaw } from 'netlify-cms-ui-default';
-import { TYPE_CONTENT, TYPE_COMPONENT } from './utils';
+import { MarkdownNode, MARKDOWN_TYPES } from './utils';
+import { NODE_TYPE_DEFAULT, NODE_TYPES } from "./MDXControl";
 
 const StyledContent = styled(TextareaAutosize)`
   width: 100%;
@@ -35,6 +36,8 @@ class ContentNode extends PureComponent {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePaste = this.handlePaste.bind(this);
+    this.matchNode = this.matchNode.bind(this);
+    this.getNodeType = this.getNodeType.bind(this);
   }
 
   componentDidMount() {
@@ -60,28 +63,40 @@ class ContentNode extends PureComponent {
     switch (evt.key) {
       case KEY_CREATE_NODE:
         evt.preventDefault();
-        let value = '';
-        if (this.props.isMarkdown) {
-          value = this.props.nodeType.symbol;
-          if (evt.target.value === value) {
-            evt.target.value = '';
-            return;
-          }
-        }
-        this.props.addItem(this.props.position, TYPE_CONTENT, value);
+        // Create a new node of the same type as this one.
+        // If the user has deleted an existing markdown symbol, the change handler should have already set the correct type.
+        const node = new MarkdownNode(this.props.node.type.symbol, this.props.node.type);
+        this.props.createNode(this.props.position, node);
         break;
       case KEY_DELETE_NODE:
         if (evt.target.value === '') {
           evt.preventDefault();
-          this.props.removeContent(this.props.position);
+          this.props.removeNode(this.props.position);
         }
         break;
     }
   }
 
+  matchNode(value, pattern) {
+    return value.match(pattern) !== null;
+  }
+
+  getNodeType(value) {
+    if (this.matchNode(value, MARKDOWN_TYPES.listUnordered.pattern)) {
+      return MARKDOWN_TYPES.listUnordered;
+    } else if (this.matchNode(value, MARKDOWN_TYPES.listOrdered.pattern)) {
+      return MARKDOWN_TYPES.listOrdered;
+    } else {
+      return MARKDOWN_TYPES.text;
+    }
+  }
+
   handleChange(evt) {
-    this.props.setNodeType(evt.target.value);
-    this.props.setValue(this.props.position, evt.target.value);
+    // Copy the current node, but update the value and type if necessary.
+    const newValue = evt.target.value;
+    const newType = this.getNodeType(newValue);
+    const node = new MarkdownNode(newValue, newType, this.props.node.id);
+    this.props.updateNode(this.props.position, node);
   }
 
   // TODO: Test evt.clipboardData in multiple browsers
@@ -93,7 +108,11 @@ class ContentNode extends PureComponent {
 
     if (clipboardArray.length > 1) {
       evt.preventDefault();
-      this.props.addItem(this.props.position, TYPE_CONTENT, clipboardArray);
+      const nodes = clipboardArray.map((value, index) => {
+        // @TODO handle other types.
+        return new MarkdownNode(value, MARKDOWN_TYPES.text);
+      });
+      this.props.createNodes(this.props.position, nodes)
     }
   }
 
@@ -115,13 +134,11 @@ class ContentNode extends PureComponent {
 ContentNode.propTypes = {
   position: PropTypes.number.isRequired,
   node: PropTypes.object.isRequired,
-  addItem: PropTypes.func.isRequired,
-  removeContent: PropTypes.func.isRequired,
   currentFocusID: PropTypes.string.isRequired,
-  setValue: PropTypes.func.isRequired,
-  setNodeType: PropTypes.func.isRequired,
-  isMarkdown: PropTypes.bool.isRequired,
-  nodeType: PropTypes.object.isRequired,
+  createNode: PropTypes.func.isRequired,
+  createNodes: PropTypes.func.isRequired,
+  updateNode: PropTypes.func.isRequired,
+  removeNode: PropTypes.func.isRequired,
 };
 
 export default ContentNode;

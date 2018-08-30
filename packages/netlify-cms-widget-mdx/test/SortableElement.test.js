@@ -4,30 +4,29 @@ import SortableElement from '../src/SortableElement.js';
 
 describe('component part', () => {
   it('should render without throwing an error', () => {
-    const item = {
+    const node = {
       id: 'third',
+      type: 'type',
       value: 'three',
     };
     const currentFocusID = '5d5e1030-a498-11e8-bde3-e3351b0ad71b';
-    const mockedHandleEnter = jest.fn();
-    const mockedHandleBackspace = jest.fn();
-    const mockedSetValue = jest.fn();
-    const mockedSetNodeType = jest.fn();
-    const mockedNodeType = {};
+    const mockedCreateNode = jest.fn();
+    const mockedCreateNodes = jest.fn();
+    const mockedUpdateNode = jest.fn();
+    const mockedRemoveNode = jest.fn();
     const position = 0;
     const wrapper = shallow(
       <SortableElement
-        key={item.id}
+        useDragHandle={true}
+        key={node.id}
         index={position}
-        node={item}
         position={position}
-        addItem={mockedHandleEnter}
-        removeContent={mockedHandleBackspace}
         currentFocusID={currentFocusID}
-        setValue={mockedSetValue}
-        setNodeType={mockedSetNodeType}
-        isMarkdown={false}
-        nodeType={mockedNodeType}
+        node={node}
+        createNode={mockedCreateNode}
+        createNodes={mockedCreateNodes}
+        updateNode={mockedUpdateNode}
+        removeNode={mockedRemoveNode}
       />,
       {
         disableLifecycleMethods: true,
@@ -35,30 +34,4 @@ describe('component part', () => {
     );
     expect(wrapper.length).toEqual(1);
   });
-  // it('should pass methods to the child content block', () => {
-  //   //
-  //   const item = {
-  //     id: 'third',
-  //     value: 'three',
-  //   }
-  //   const mockedHandleEnter = jest.fn()
-  //   const mockedHandleBackspace = jest.fn()
-  //   const mockedSetValue = jest.fn()
-  //   const position = 1
-  //   const component = mount(
-  //     <SortableElement
-  //       key={item.id}
-  //       index={position}
-  //       value={item.value}
-  //       position={position}
-  //       handleEnter={mockedHandleEnter}
-  //       removeContent={mockedHandleBackspace}
-  //       setValue={mockedSetValue}
-  //     />, {disableLifecycleMethods: true}
-  //   )
-  //   component.find('textarea').simulate('keyDown', {
-  //     key: 'Backspace',
-  //   })
-  //   expect(mockedHandleBackspace).toBeCalledWith(position)
-  // })
 });

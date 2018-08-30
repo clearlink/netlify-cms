@@ -6,29 +6,28 @@ import SortableElement from 'netlify-cms-widget-mdx/src/SortableElement';
 
 const SortableContainer = ReactSortableContainer(
   ({
-     nodes,
-     addItem,
-     removeContent,
+     // onSortEnd,
+     useDragHandle,
      currentFocusID,
-     setValue,
-     setNodeType,
-     isMarkdown,
-     nodeType,
+     nodes,
+     createNode,
+     createNodes,
+     updateNode,
+     removeNode,
    }) => (
     <div>
       {nodes.map((node, idx) => (
         <SortableElement
+          useDragHandle={useDragHandle}
           key={node.id}
           index={idx}
           position={idx}
-          node={node}
-          addItem={addItem}
-          removeContent={removeContent}
           currentFocusID={currentFocusID}
-          setValue={setValue}
-          setNodeType={setNodeType}
-          isMarkdown={isMarkdown}
-          nodeType={nodeType}
+          node={node}
+          createNode={createNode}
+          createNodes={createNodes}
+          updateNode={updateNode}
+          removeNode={removeNode}
         />
       ))}
     </div>
@@ -36,14 +35,14 @@ const SortableContainer = ReactSortableContainer(
 );
 
 SortableContainer.propTypes = {
-  nodes: PropTypes.array.isRequired,
-  addItem: PropTypes.func.isRequired,
-  removeContent: PropTypes.func.isRequired,
+  onSortEnd: PropTypes.func.isRequired,
+  useDragHandle: PropTypes.bool.isRequired,
   currentFocusID: PropTypes.string.isRequired,
-  setValue: PropTypes.func.isRequired,
-  setNodeType: PropTypes.func.isRequired,
-  isMarkdown: PropTypes.bool.isRequired,
-  nodeType: PropTypes.object.isRequired,
+  nodes: PropTypes.array.isRequired,
+  createNode: PropTypes.func.isRequired,
+  createNodes: PropTypes.func.isRequired,
+  updateNode: PropTypes.func.isRequired,
+  removeNode: PropTypes.func.isRequired,
 };
 
 export default SortableContainer;
