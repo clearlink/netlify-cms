@@ -63,8 +63,10 @@ export default class ObjectControl extends Component {
   };
 
   renderFields = (multiFields, singleField) => {
+    console.log('MF: ', multiFields.toJS())
+    console.log('SF: ', singleField)
     if (multiFields) {
-      return multiFields.map((f, idx) => this.controlFor(f, idx));
+      return multiFields.map((f, idx) => console.log('TEST: ', f) || this.controlFor(f, idx));
     }
     return this.controlFor(singleField);
   };

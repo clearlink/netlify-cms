@@ -35,18 +35,6 @@ class Element extends React.Component {
   }
   render() {
     // TODO: Kill :hover, let's use state to .. well.. set states.
-    const {
-      node,
-      position,
-      currentFocusID,
-      addItem,
-      removeContent,
-      setValue,
-      setNodeType,
-      isMarkdown,
-      nodeType,
-    } = this.props;
-
     const style = css`
       position: relative;
       margin: 1px 0;
@@ -62,28 +50,10 @@ class Element extends React.Component {
       }
     `;
 
-    const sharedProps = {
-      node,
-      position,
-      currentFocusID,
-      addItem,
-      removeContent,
-      isMarkdown,
-      nodeType,
-    };
-
-    const contentNodeProps = {
-      ...sharedProps,
-      setValue,
-      setNodeType,
-      isMarkdown,
-      nodeType,
-    };
-
     return (
       <div className={style}>
         <DragHandle />
-        {this.determineNode(node.type, contentNodeProps)}
+        {this.determineNode(this.props.node.type, {...this.props})}
       </div>
     );
   }

@@ -14,6 +14,8 @@ const SortableContainer = ReactSortableContainer(
      setNodeType,
      isMarkdown,
      nodeType,
+     onChangeObject,
+     editorControl,
    }) => (
     <div>
       {nodes.map((node, idx) => (
@@ -29,6 +31,8 @@ const SortableContainer = ReactSortableContainer(
           setNodeType={setNodeType}
           isMarkdown={isMarkdown}
           nodeType={nodeType}
+          onChangeObject={onChangeObject}
+          editorControl={editorControl}
         />
       ))}
     </div>

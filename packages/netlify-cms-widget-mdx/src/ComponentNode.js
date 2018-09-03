@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fromJS } from 'immutable'
+import { Map, fromJS } from 'immutable'
 
 
 class ComponentNode extends Component {
@@ -11,13 +11,16 @@ class ComponentNode extends Component {
   }
 
   controlFor(field, key) {
-    const { value, onChangeObject, editorControl: EditorControl } = this.props;
+    const { onChangeObject, editorControl: EditorControl } = this.props;
+    console.log('Blah: ', onChangeObject, EditorControl)
+
+    const testValue = this.props.value || 'Testing'
 
     if (field.get('widget') === 'hidden') {
       return null;
     }
     const fieldName = field.get('name');
-    const fieldValue = value && Map.isMap(value) ? value.get(fieldName) : value;
+    const fieldValue = testValue && Map.isMap(testValue) ? testValue.get(fieldName) : testValue;
 
     return <EditorControl key={key} field={field} value={fieldValue} onChange={onChangeObject} />;
   }
@@ -27,22 +30,13 @@ class ComponentNode extends Component {
   };
 
   renderFields = (fields) => {
-    return fields.map((f, idx) => { console.log('Test: ', f.toJS()) || this.controlFor(f, idx)});
+    return fields.map((f, idx) => { console.log('Test: ', f) || this.controlFor(f, idx)});
   };
 
   render() {
     // TODO: Temporary Mess
     const component = this.props.node.field.get('categories').toJS()[0].components[0];
     const dummyFields = fromJS(component.fields)
-    console.log(dummyFields)
-
-    // const { node } = this.props;
-
-    // for (const cat of node.field.get('categories')) {
-    //   for (const component of cat.get('components')) {
-    //     console.log(component.toJS())
-    //   }
-    // }
     
     if (dummyFields) {
       return (

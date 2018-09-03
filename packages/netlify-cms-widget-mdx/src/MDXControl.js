@@ -136,7 +136,7 @@ export default class MDXControl extends Component {
   }
 
   render() {
-    const { field, classNameWrapper } = this.props;
+  const { field, classNameWrapper, onChangeObject, editorControl} = this.props;
     const cats = field.get('categories');
 
     // console.log(cats.getIn('components'));
@@ -182,6 +182,8 @@ export default class MDXControl extends Component {
           useDragHandle={true}
           isMarkdown={this.state.nodeIsMarkdown}
           nodeType={this.state.nodeType}
+          onChangeObject={onChangeObject}
+          editorControl={editorControl}
         />
       </div>
     );
